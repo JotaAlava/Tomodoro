@@ -4,7 +4,7 @@ import HomePage from "./home/HomePage";
 import AboutPage from "./about/AboutPage";
 import Header from "./common/Header";
 import PageNotFound from "./common/PageNotFound";
-import Tomatoes from "./tomato/Tomatoes";
+import Tomatoes from "./tomato/TomatoesPage";
 
 function App() {
   return (
