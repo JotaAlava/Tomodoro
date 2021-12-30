@@ -1,8 +1,9 @@
-import { actions } from "../actions/tomatoActions";
+import * as types from "../actions/actionTypes";
+import initialState from "./initialState";
 
-export default function tomatoReducer(state = [], action) {
+export default function tomatoReducer(state = initialState.tomatoes, action) {
   switch (action.type) {
-    case actions.CREATETOMATO:
+    case types.CREATE_TOMATO:
       return [...state, { ...action.tomato }];
     default:
       return state;

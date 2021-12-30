@@ -1,7 +1,5 @@
-export const actions = {
-  CREATETOMATO: "CREATE_TOMATO",
-};
+import * as types from "./actionTypes";
 
 export function createTomato(tomato) {
-  return { type: actions.CREATETOMATO, tomato };
+  return { type: types.CREATE_TOMATO, tomato };
 }

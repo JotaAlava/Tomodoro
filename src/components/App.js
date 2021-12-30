@@ -5,6 +5,8 @@ import AboutPage from "./about/AboutPage";
 import Header from "./common/Header";
 import PageNotFound from "./common/PageNotFound";
 import Tomatoes from "./tomato/TomatoesPage";
+import Contexts from "./context/ContextsPage";
+import ContextsEdit from "./context/ContextsEdit";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route exact path="/" component={HomePage}></Route>
         <Route path="/about" component={AboutPage}></Route>
         <Route path="/tomatoes" component={Tomatoes}></Route>
+        <Route path="/contexts/:id" component={ContextsEdit}></Route>
+        <Route path="/contexts" component={Contexts}></Route>
         <Route component={PageNotFound}></Route>
       </Switch>
     </div>

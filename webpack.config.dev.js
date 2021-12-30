@@ -23,6 +23,11 @@ module.exports = {
     https: false,
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env.API_URL": JSON.stringify(
+        "https://b0yojzr0z1.execute-api.us-east-1.amazonaws.com"
+      ),
+    }),
     new HtmlWebpackPlugin({
       template: "src/index.html",
       favicon: "src/favicon.ico",
