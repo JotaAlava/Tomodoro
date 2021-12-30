@@ -1,6 +1,7 @@
 import * as types from "./actionTypes";
 // TODO: Fix contextService import
 import * as contextService from "../../services/contextService";
+import { beginApiCall } from "./apiStatusActions";
 
 export function updateContext(context) {
   return { type: types.CREATE_CONTEXT, context };
@@ -20,6 +21,7 @@ export function loadContextsSuccess(contexts) {
 
 export function loadContexts() {
   return function (dispatch) {
+    dispatch(beginApiCall());
     return contextService.contextService
       .getContexts()
       .then((contexts) => {

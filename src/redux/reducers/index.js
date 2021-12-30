@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import apiCallStatusReducer from "./apiStatusReducer";
 import contextReducer from "./contextReducers";
 import tomatoReducer from "./tomatoReducers";
 
@@ -6,6 +7,7 @@ import tomatoReducer from "./tomatoReducers";
 const rootReducer = combineReducers({
   tomatoes: tomatoReducer,
   contexts: contextReducer,
+  apiCallsInProgress: apiCallStatusReducer,
 });
 
 export default rootReducer;

@@ -5,6 +5,7 @@ import * as contextActions from "../../redux/actions/contextActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import ContextsList from "./ContextsList";
+import Loading from "../common/Loading";
 
 class ContextsPage extends React.Component {
   componentDidMount() {
@@ -14,24 +15,30 @@ class ContextsPage extends React.Component {
   }
 
   render() {
-    return (
-      <>
-        <h2>Contexts</h2>
-        <ContextsList contexts={this.props.contexts}></ContextsList>
-      </>
-    );
+    if (this.props.loading) {
+      return <Loading></Loading>;
+    } else {
+      return (
+        <>
+          <h2>Contexts</h2>
+          <ContextsList contexts={this.props.contexts}></ContextsList>
+        </>
+      );
+    }
   }
 }
 
 ContextsPage.propTypes = {
   contexts: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 // This determines what part of the State we expose to the component
 function mapStateToProps(state) {
   return {
     contexts: state.contexts,
+    loading: state.apiCallsInProgress > 0,
   };
 }
 

@@ -44,6 +44,7 @@ const ContextForm = ({
         error={errors.default}
       />
 
+      {saving}
       <button type="submit" disabled={saving} className="btn btn-primary">
         {saving ? "Saving..." : "Save"}
       </button>

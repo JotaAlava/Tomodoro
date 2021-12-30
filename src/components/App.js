@@ -7,6 +7,8 @@ import PageNotFound from "./common/PageNotFound";
 import Tomatoes from "./tomato/TomatoesPage";
 import Contexts from "./context/ContextsPage";
 import ContextsEdit from "./context/ContextsEdit";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
         <Route path="/contexts" component={Contexts}></Route>
         <Route component={PageNotFound}></Route>
       </Switch>
+      <ToastContainer autoClose={3000} hideProgressBar></ToastContainer>
     </div>
   );
 }

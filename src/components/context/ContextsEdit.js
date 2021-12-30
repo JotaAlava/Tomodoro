@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import ContextForm from "./ContextForm";
 import Loading from "../common/Loading";
+import { toast } from "react-toastify";
 
 const emptyCtx = {
   created: null,
@@ -19,6 +20,7 @@ const emptyCtx = {
 const ContextsEdit = ({ match, contexts, actions, ...props }) => {
   const [context, setContext] = useState({ ...props.context });
   const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (contexts.length === 0) {
@@ -41,19 +43,22 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
 
   function handleSave(event) {
     event.preventDefault();
+    setSaving(true);
     actions.saveContext(context).then(() => {
+      console.log(toast);
+      toast.success("Course saved");
       props.history.push("/contexts");
     });
   }
 
-  if (context) {
+  if (contexts.length > 0) {
     return (
       <>
-        <h2>Edit Slug is:</h2>
         <ContextForm
           context={context}
           onChange={handleChange}
           onSave={handleSave}
+          saving={saving}
         ></ContextForm>
       </>
     );
