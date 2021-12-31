@@ -44,11 +44,17 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
   function handleSave(event) {
     event.preventDefault();
     setSaving(true);
-    actions.saveContext(context).then(() => {
-      console.log(toast);
-      toast.success("Course saved");
-      props.history.push("/contexts");
-    });
+    actions
+      .saveContext(context)
+      .then(() => {
+        console.log(toast);
+        toast.success("Course saved");
+        props.history.push("/contexts");
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors({ onSave: error.message });
+      });
   }
 
   if (contexts.length > 0) {
@@ -58,6 +64,7 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
           context={context}
           onChange={handleChange}
           onSave={handleSave}
+          errors={errors}
           saving={saving}
         ></ContextForm>
       </>

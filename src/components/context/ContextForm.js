@@ -3,16 +3,7 @@ import PropTypes from "prop-types";
 import TextInput from "../common/TextInput";
 import BooleanInput from "../common/BooleanInput";
 
-const ContextForm = ({
-  context,
-  onSave,
-  onChange,
-  saving = false,
-  ...props
-}) => {
-  const [ctx, setContext] = useState({ ...props.context });
-  const [errors, setErrors] = useState({});
-
+const ContextForm = ({ context, onSave, onChange, saving = false, errors }) => {
   return (
     <form onSubmit={onSave}>
       <h2>{context && context.tomatoContextId ? "Edit" : "Add"} Context</h2>
@@ -57,6 +48,7 @@ ContextForm.propTypes = {
   onSave: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   saving: PropTypes.bool,
+  errors: PropTypes.object.isRequired,
 };
 
 export default ContextForm;

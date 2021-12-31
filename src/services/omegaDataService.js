@@ -24,7 +24,7 @@ export function pluckByDataSchemaId(dataSchemaId, obj) {
 
   const result = [];
   obj.result.forEach((item) => {
-    const dataSchemaRows = item.data;
+    const dataSchemaRows = item.data ? item.data : [];
 
     dataSchemaRows.forEach((ds) => {
       if (ds.dataSchemaId === dataSchemaId) {

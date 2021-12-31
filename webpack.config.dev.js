@@ -25,7 +25,10 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       "process.env.API_URL": JSON.stringify(
-        "https://b0yojzr0z1.execute-api.us-east-1.amazonaws.com"
+        "https://b0yojzr0z1.execute-api.us-east-1.amazonaws.com/dev/"
+      ),
+      "process.env.PRODUCT_ID": JSON.stringify(
+        "5F27FC90-1F7A-11EC-B294-AB5D2B155148" // Most Expensive Developer ProductId
       ),
     }),
     new HtmlWebpackPlugin({

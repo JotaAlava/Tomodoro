@@ -1,7 +1,7 @@
 import * as types from "./actionTypes";
 // TODO: Fix contextService import
 import * as contextService from "../../services/contextService";
-import { beginApiCall } from "./apiStatusActions";
+import { beginApiCall, apiCallError } from "./apiStatusActions";
 
 export function updateContext(context) {
   return { type: types.CREATE_CONTEXT, context };
@@ -28,7 +28,7 @@ export function loadContexts() {
         dispatch(loadContextsSuccess(contexts));
       })
       .catch((err) => {
-        console.log(err);
+        throw err;
       });
   };
 }
@@ -41,7 +41,8 @@ export function saveContext(context) {
         dispatch(saveContextSuccess(savedCtx));
       })
       .catch((err) => {
-        console.log(err);
+        dispatch(apiCallError(err));
+        throw err;
       });
   };
 }
