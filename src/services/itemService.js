@@ -1,38 +1,25 @@
-import { pluckByDataSchemaId, dataSchemas } from "./omegaDataService";
+import { api, buildOptions, HTTP_VERBS, grokResponse } from './apiService';
 
-const path = "item/";
+const path = 'item/';
 
-const getItems = () => {
-  return fetch(process.env.API_URL + path, {
-    headers: {
-      Authorization: "Bearer j0t@",
-      //   IdToken: "j0t@",
-      ProductId: process.env.PRODUCT_ID,
-    },
-  }).then((response) => response.json());
+const postItem = async (body, token) => {
+	const url = process.env.API_URL + path;
+	const httpResponse = await api(
+		url,
+		buildOptions(HTTP_VERBS.POST, token, body)
+	);
+
+	return grokResponse(httpResponse);
 };
 
-const getItemById = (id) => {
-  return fetch(process.env.API_URL + path + id, {
-    headers: {
-      Authorization: "Bearer j0t@",
-      //   IdToken: "j0t@",
-      ProductId: process.env.PRODUCT_ID,
-    },
-  }).then((response) => response.json());
+const deleteItem = async (itemId, token) => {
+	const url = process.env.API_URL + path + itemId;
+	const httpResponse = await api(
+		url,
+		buildOptions(HTTP_VERBS.DELETE, token)
+	);
+
+	return grokResponse(httpResponse);
 };
 
-const postItem = (body) => {
-  const validBody = JSON.stringify(body);
-  return fetch(process.env.API_URL + path, {
-    body: validBody,
-    method: "POST",
-    headers: {
-      Authorization: "Bearer j0t@",
-      //   IdToken: "j0t@",
-      ProductId: process.env.PRODUCT_ID,
-    },
-  }).then((response) => response.json());
-};
-
-export { getItems, postItem, getItemById };
+export { postItem, deleteItem };

@@ -1,26 +1,27 @@
-import { pluckByDataSchemaId, dataSchemas } from "./omegaDataService";
+import { api, buildOptions, HTTP_VERBS } from './apiService';
+import { STATUS_CODES } from '../shared/shared';
 
-const path = "ds/";
+const path = 'ds/';
+const dataSource = async (dataSourceId, token, body) => {
+	const url = process.env.API_URL + path + dataSourceId;
 
-const executeDS = (id, body) => {
-  const validBody = JSON.stringify(body);
-  return fetch(process.env.API_URL + path + id, {
-    body: validBody,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ProductId: process.env.PRODUCT_ID,
-      Authorization: "Bearer 00000000-0000-0000-0000-000000000000",
-    },
-  }).then((response) => response.json());
+	const httpResponse = await api(
+		url,
+		buildOptions(HTTP_VERBS.POST, token, body)
+	);
+
+	const items = httpResponse;
+	const msg = 'Unauthorized';
+
+	if (items.statusCode === STATUS_CODES.OK) {
+		return Promise.resolve(items.result);
+	} else if (items.statusCode === STATUS_CODES.BadRequest) {
+		return Promise.reject(items);
+	} else if (items.message === msg) {
+		return Promise.reject(items);
+	} else {
+		return Promise.reject(items);
+	}
 };
 
-const getContexts = () => {
-  const dataSourceId = "53440160-326a-11eb-8521-0b87dfab7e46";
-
-  return executeDS(dataSourceId, {
-    productId: process.env.PRODUCT_ID,
-  });
-};
-
-export { getContexts };
+export { dataSource };

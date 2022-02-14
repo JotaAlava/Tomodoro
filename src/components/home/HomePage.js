@@ -1,12 +1,14 @@
-import React from "react";
+import React from 'react';
 
 const HomePage = () => {
-  return (
-    <div className="jumbotron">
-      <h1>Tomodoro</h1>
-      <p>The Social Pomodoro Technique</p>
-    </div>
-  );
+	return (
+		<div className="row">
+			<div className="col-12">
+				<h1>Tomodoro</h1>
+			</div>
+			<div className="col-12">The Social Pomodoro Technique</div>
+		</div>
+	);
 };
 
 export default HomePage;
