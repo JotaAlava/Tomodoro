@@ -30,14 +30,6 @@ const Header = () => {
 						Tomatoes
 					</NavLink>
 					<NavLink
-						to="/braindump"
-						className={inActiveClass}
-						activeclass={activeClass}
-						exact
-					>
-						Braindump
-					</NavLink>
-					<NavLink
 						to="/contexts"
 						className={inActiveClass}
 						activeclass={activeClass}

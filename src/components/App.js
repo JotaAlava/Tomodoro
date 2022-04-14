@@ -9,7 +9,6 @@ import Tomatoes from './tomato/TomatoesPage';
 import Contexts from './context/ContextsPage';
 import ContextsEdit from './context/ContextsEdit';
 import AccountPage from './account/AccountPage';
-import BrainDump from './braindump/Braindump';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,7 +35,6 @@ function App() {
 					<Route exact path="/" component={HomePage}></Route>
 					<Route path="/about" component={AboutPage}></Route>
 					<Route path="/tomatoes" component={Tomatoes}></Route>
-					<Route path="/braindump" component={BrainDump}></Route>
 					<Route path="/contexts/:id" component={ContextsEdit}></Route>
 					<Route path="/contexts" component={Contexts}></Route>
 					<Route path="/account" component={AccountPage}></Route>
@@ -45,19 +43,6 @@ function App() {
 				<ToastContainer autoClose={3000} hideProgressBar></ToastContainer>
 				<Footer></Footer>
 			</div>
-			{/* <div className="container-fluid">
-				<Header />
-				<Switch>
-					<Route exact path="/" component={HomePage}></Route>
-					<Route path="/about" component={AboutPage}></Route>
-					<Route path="/tomatoes" component={Tomatoes}></Route>
-					<Route path="/contexts/:id" component={ContextsEdit}></Route>
-					<Route path="/contexts" component={Contexts}></Route>
-					<Route path="/account" component={AccountPage}></Route>
-					<Route component={PageNotFound}></Route>
-				</Switch>
-				<ToastContainer autoClose={3000} hideProgressBar></ToastContainer>
-			</div> */}
 		</Auth0Provider>
 	);
 }
