@@ -18,14 +18,16 @@ const ContextsPage = (props) => {
 	const loadContexts = async () => {
 		const token = await getAccessTokenSilently();
 
-		props.actions
-			.loadContexts(token, user.sub)
-			.then(() => {
-				setLoading(false);
-			})
-			.catch((err) => {
-				setErrors({ ...errors, contexts: err });
-			});
+		if (user) {
+			props.actions
+				.loadContexts(token, user.sub)
+				.then(() => {
+					setLoading(false);
+				})
+				.catch((err) => {
+					setErrors({ ...errors, contexts: err });
+				});
+		}
 	};
 
 	useEffect(async () => {
@@ -49,21 +51,29 @@ const ContextsPage = (props) => {
 			return loading ? (
 				<Loading></Loading>
 			) : (
-				<>
-					<h2>Contexts</h2>
-					<ContextCreateButton onClick={createContext}></ContextCreateButton>
-					<h3>No contexts</h3>
-				</>
+				<main role="main" className="inner cover">
+					<h1 className="cover-heading">Contexts</h1>
+					<p className="lead">
+						<ContextCreateButton onClick={createContext}></ContextCreateButton>
+					</p>
+					<p className="lead">
+						<h3>No contexts</h3>
+					</p>
+				</main>
 			);
 		} else {
 			return loading ? (
 				<Loading></Loading>
 			) : (
-				<>
-					<h2>Contexts</h2>
-					<ContextCreateButton onClick={createContext}></ContextCreateButton>
-					<ContextsList contexts={props.contexts}></ContextsList>
-				</>
+				<main role="main" className="inner cover">
+					<h1 className="cover-heading">Contexts</h1>
+					<div className="lead">
+						<ContextCreateButton onClick={createContext}></ContextCreateButton>
+					</div>
+					<div className="lead">
+						<ContextsList contexts={props.contexts}></ContextsList>
+					</div>
+				</main>
 			);
 		}
 	} else {

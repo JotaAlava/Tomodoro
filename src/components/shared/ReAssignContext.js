@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { fontSize } from '../../shared/styles';
 
-const RemovableRow = (props) => {
+const ReAssignContext = (props) => {
 	const index = 100;
 	const [removeList, setRemoveList] = useState({});
 	const font = fontSize;
@@ -26,11 +26,12 @@ const RemovableRow = (props) => {
 			<a
 				href="#"
 				onClick={() => {
+					notSure();
 					props.onConfirm(props.itemId);
 				}}
 				style={font}
 			>
-				Yep
+				Re-Assign
 			</a>{' '}
 			<a
 				href="#"
@@ -39,7 +40,7 @@ const RemovableRow = (props) => {
 				}}
 				style={font}
 			>
-				Nah
+				Do nothing
 			</a>
 		</td>
 	) : (
@@ -51,15 +52,15 @@ const RemovableRow = (props) => {
 				}}
 				style={font}
 			>
-				Remove
+				Context
 			</a>
 		</td>
 	);
 };
 
-RemovableRow.propTypes = {
-	onConfirm: PropTypes.func.isRequired,
-	itemId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
+ReAssignContext.propTypes = {
+	contextId: PropTypes.number,
+	onConfirm: PropTypes.func.isRequired
 };
 
-export default RemovableRow;
+export default ReAssignContext;

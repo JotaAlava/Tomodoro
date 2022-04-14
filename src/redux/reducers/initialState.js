@@ -9,5 +9,6 @@ export default {
 	tomatoTimer: {
 		isRunning: false,
 		time: 1500
-	}
+	},
+	notes: []
 };

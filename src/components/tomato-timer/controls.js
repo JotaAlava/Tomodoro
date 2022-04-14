@@ -26,6 +26,7 @@ const Controls = (props) => {
 
 	const handleReset = () => {
 		props.actions.resetTimer();
+		handlePlayPause();
 	};
 
 	const handlePlayPause = () => {

@@ -8,6 +8,7 @@ import RemovableRow from '../shared/RemovableRow';
 import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import Loading from '../shared/Loading';
+import { fontSize, fontColor } from '../../shared/styles';
 
 const ContextsList = ({ contexts, selectable, selectedContext, ...props }) => {
 	const [errors, setErrors] = useState({});
@@ -74,9 +75,10 @@ const ContextsList = ({ contexts, selectable, selectedContext, ...props }) => {
 	} else {
 		const className = 'text-wrap';
 		const style = { width: '10rem' };
+		const fonts = { color: fontColor.color, fontSize: fontSize.fontSize };
 
 		return (
-			<table className="table table-borderless">
+			<table className="table table-borderless" style={fonts}>
 				<thead className="thead-dark">
 					<tr>
 						<th scope="col">Label</th>

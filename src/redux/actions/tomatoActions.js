@@ -1,6 +1,11 @@
 import * as types from './actionTypes';
 import { beginApiCall, apiCallError } from '../actions/apiStatusActions';
-import { getTomatoes, save, remove } from '../../services/tomatoService';
+import {
+	getTomatoes,
+	save,
+	remove,
+	update
+} from '../../services/tomatoService';
 
 export function createTomato(tomato, token, userId) {
 	const body = {
@@ -41,6 +46,19 @@ export function loadTomatoes(token, userId) {
 export function saveTomato(newTomato, token, userId) {
 	return function (dispatch) {
 		return save(newTomato, token, userId)
+			.then((newTomato) => {
+				dispatch(saveTomatoSuccess(newTomato));
+			})
+			.catch((err) => {
+				dispatch(apiCallError(err));
+				throw err;
+			});
+	};
+}
+
+export function updateTomato(tomato, token) {
+	return function (dispatch) {
+		return update(tomato, token)
 			.then((newTomato) => {
 				dispatch(saveTomatoSuccess(newTomato));
 			})

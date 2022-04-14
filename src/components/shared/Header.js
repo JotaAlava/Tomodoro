@@ -4,35 +4,67 @@ import LoginButton from './LoginButton';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const Header = () => {
-	const activeStyle = { color: '#F1582A' };
-	const { user, isAuthenticated, isLoading } = useAuth0();
+	const activeClass = 'nav-link active';
+	const inActiveClass = 'nav-link';
+	const { isAuthenticated } = useAuth0();
 
 	return (
-		<nav>
-			<NavLink to="/" activeStyle={activeStyle} exact>
-				Home
-			</NavLink>
-			{' | '}
-			<NavLink to="/tomatoes" activeStyle={activeStyle} exact>
-				Tomatoes
-			</NavLink>
-			{' | '}
-			<NavLink to="/contexts" activeStyle={activeStyle}>
-				Contexts
-			</NavLink>
-			{' | '}
-			<NavLink to="/about" activeStyle={activeStyle}>
-				About
-			</NavLink>
-			{' | '}
-			{isAuthenticated ? (
-				<NavLink to="/account" activeStyle={activeStyle}>
-					Account
-				</NavLink>
-			) : (
-				<LoginButton></LoginButton>
-			)}
-		</nav>
+		<header className="masthead mb-auto">
+			<div className="inner">
+				<h3 className="masthead-brand">Cover</h3>
+				<nav className="nav nav-masthead justify-content-center">
+					<NavLink
+						to="/"
+						className={inActiveClass}
+						activeclass={activeClass}
+						exact
+					>
+						Home
+					</NavLink>
+					<NavLink
+						to="/tomatoes"
+						className={inActiveClass}
+						activeclass={activeClass}
+						exact
+					>
+						Tomatoes
+					</NavLink>
+					<NavLink
+						to="/braindump"
+						className={inActiveClass}
+						activeclass={activeClass}
+						exact
+					>
+						Braindump
+					</NavLink>
+					<NavLink
+						to="/contexts"
+						className={inActiveClass}
+						activeclass={activeClass}
+					>
+						Contexts
+					</NavLink>
+					<NavLink
+						to="/about"
+						className={inActiveClass}
+						activeclass={activeClass}
+					>
+						About
+					</NavLink>
+					{isAuthenticated ? (
+						<NavLink
+							to="/account"
+							className={inActiveClass}
+							activeclass={activeClass}
+						>
+							Account
+						</NavLink>
+					) : (
+						<LoginButton></LoginButton>
+					)}
+				</nav>
+			</div>
+		</header>
 	);
 };
 

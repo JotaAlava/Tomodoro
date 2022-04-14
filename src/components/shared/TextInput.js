@@ -1,28 +1,31 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { fontSize } from '../../shared/styles';
 
 function TextInput(props) {
-  let wrapperClass = "form-group";
-  if (props.error.length > 0) {
-    wrapperClass += " has-error";
-  }
+	let wrapperClass = 'form-group';
+	if (props.error.length > 0) {
+		wrapperClass += ' has-error';
+	}
 
-  return (
-    <div className={wrapperClass}>
-      <label htmlFor={props.id}>{props.label}</label>
-      <div className="field">
-        <input
-          id={props.id}
-          type="text"
-          onChange={props.onChange}
-          name={props.name}
-          className="form-control"
-          value={props.value}
-        />
-      </div>
-      {props.error && <div className="alert alert-danger">{props.error}</div>}
-    </div>
-  );
+	return (
+		<div className={wrapperClass}>
+			<label htmlFor={props.id} style={fontSize}>
+				{props.label}
+			</label>
+			<div className="field">
+				<input
+					id={props.id}
+					type="text"
+					onChange={props.onChange}
+					name={props.name}
+					className="form-control"
+					value={props.value}
+				/>
+			</div>
+			{props.error && <div className="alert alert-danger">{props.error}</div>}
+		</div>
+	);
 }
 
 TextInput.propTypes = {
@@ -36,7 +39,7 @@ TextInput.propTypes = {
 };
 
 TextInput.defaultProps = {
-  error: "",
+	error: ''
 };
 
 export default TextInput;

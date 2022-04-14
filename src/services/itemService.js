@@ -14,12 +14,26 @@ const postItem = async (body, token) => {
 
 const deleteItem = async (itemId, token) => {
 	const url = process.env.API_URL + path + itemId;
+	const httpResponse = await api(url, buildOptions(HTTP_VERBS.DELETE, token));
+
+	return grokResponse(httpResponse);
+};
+
+const putItem = async (item, token) => {
+	const url = process.env.API_URL + path + item.itemId;
 	const httpResponse = await api(
 		url,
-		buildOptions(HTTP_VERBS.DELETE, token)
+		buildOptions(HTTP_VERBS.PUT, token, item)
 	);
 
 	return grokResponse(httpResponse);
 };
 
-export { postItem, deleteItem };
+const getItem = async (itemId, token) => {
+	const url = process.env.API_URL + path + itemId;
+	const httpResponse = await api(url, buildOptions(HTTP_VERBS.GET, token));
+
+	return grokResponse(httpResponse);
+};
+
+export { postItem, deleteItem, putItem, getItem };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import * as contextActions from '../../redux/actions/contextActions';
 // Prop types helps us specify that props that our component accepts
@@ -11,13 +11,20 @@ import ContextsList from '../context/ContextsList';
 
 const TomatoContextsPicker = (props) => {
 	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const [loadingContexts, setLoadingContexts] = useState(false);
 
-	useEffect(async () => {
+	const refreshContexts = async () => {
 		const token = await getAccessTokenSilently();
-		if (isAuthenticated) {
-			props.actions.loadContexts(token, user.sub);
-		}
-	}, [isAuthenticated]);
+		setLoadingContexts(true);
+		props.context
+			.loadContexts(token, user.sub)
+			.then(() => {
+				setLoadingContexts(false);
+			})
+			.catch((err) => {
+				// Do nothing...
+			});
+	};
 
 	if (isAuthenticated) {
 		if (props.contexts.length > 0) {
@@ -35,13 +42,30 @@ const TomatoContextsPicker = (props) => {
 				</div>
 			);
 		} else if (props.contexts.length === 0) {
-			return (
-				<div className="row">
-					<div className="col-12">
-						<h4>No contexts yet.</h4>
+			if (loadingContexts) {
+				return (
+					<div className="row">
+						<div className="col-12">
+							<Loading></Loading>
+						</div>
 					</div>
-				</div>
-			);
+				);
+			} else {
+				return (
+					<div className="row">
+						<div className="col-12">
+							<h4>No contexts yet.</h4>
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => refreshContexts()}
+							>
+								Refresh
+							</button>
+						</div>
+					</div>
+				);
+			}
 		} else {
 			return <LoginButton></LoginButton>;
 		}
@@ -59,6 +83,7 @@ TomatoContextsPicker.propTypes = {
 // Runs every time the redux store state changes
 function mapStateToProps(state) {
 	return {
+		apiCallsInProgress: state.apiCallsInProgress,
 		contexts: state.contexts // This one is actually wired up to Redux
 	};
 }

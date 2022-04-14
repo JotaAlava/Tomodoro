@@ -1,36 +1,84 @@
 import assert from './assert';
 
-export const dataSchemas = {
-	tomatoContext: 'BA0D22F8-2053-470D-8B82-4BCA8077212C'
-};
-
-export const dataSchemaNames = {
-	'BA0D22F8-2053-470D-8B82-4BCA8077212C': 'tomatoContext'
-};
-
 /**
  * Plucks the data schema from an omega server response
  */
-export function pluckByDataSchemaId(dataSchemaId, obj) {
+export function pluckByDataSchemaId(
+	dataSchemaTableName,
+	dataSchemaId,
+	omegaServerResponse
+) {
 	assert(
-		Object.prototype.hasOwnProperty.call(obj, 'result'),
+		Object.prototype.hasOwnProperty.call(omegaServerResponse, 'result'),
 		'result prop is missing'
 	);
 	assert(
-		Object.prototype.hasOwnProperty.call(obj, 'statusCode'),
+		Object.prototype.hasOwnProperty.call(omegaServerResponse, 'statusCode'),
 		'statusCode prop is missing'
 	);
 
 	const result = [];
-	obj.result.forEach((item) => {
+	omegaServerResponse.result.forEach((item) => {
 		const dataSchemaRows = item.data ? item.data : [];
 
 		dataSchemaRows.forEach((ds) => {
 			if (ds.dataSchemaId === dataSchemaId) {
-				result.push(ds[dataSchemaNames[dataSchemaId]]);
+				result.push(ds[dataSchemaTableName]);
 			}
 		});
 	});
 
 	return result;
+}
+
+export function updateByDataSchemaId(
+	dataSchemaTableName,
+	dataSchemaId,
+	item,
+	updatedRow
+) {
+	assert(
+		Object.prototype.hasOwnProperty.call(item, 'data'),
+		'item data is missing'
+	);
+
+	const dataSchemaRows = item.data ? item.data : [];
+	const tableName = dataSchemaTableName;
+	const idProp = `${tableName}Id`;
+
+	let rowToUpdate = dataSchemaRows.find((ds) => {
+		return ds[tableName][idProp] === updatedRow[idProp];
+	});
+
+	const newRow = {
+		dataSchemaId
+	};
+	newRow[tableName] = updatedRow;
+
+	const neww = JSON.parse(JSON.stringify(newRow));
+	const updatedItem = setByDataSchemaId(item, rowToUpdate, neww);
+
+	return updatedItem;
+}
+
+function setByDataSchemaId(item, old, neww) {
+	assert(
+		Object.prototype.hasOwnProperty.call(item, 'data'),
+		'item data is missing'
+	);
+
+	assert(
+		Object.prototype.hasOwnProperty.call(old, 'dataSchemaId'),
+		'data has no dataSchemaId'
+	);
+
+	assert(
+		Object.prototype.hasOwnProperty.call(neww, 'dataSchemaId'),
+		'new data has no dataSchemaId'
+	);
+
+	const index = item.data.indexOf(old);
+	item.data[index] = neww;
+
+	return item;
 }

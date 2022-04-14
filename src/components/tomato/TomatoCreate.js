@@ -35,6 +35,7 @@ const TomatoCreate = ({ selectedContext, actions }) => {
 	async function handleSave(event) {
 		event.preventDefault();
 		setSaving(true);
+		toast.info('Logging work...');
 
 		const token = await getAccessTokenSilently();
 		const ctx =
@@ -49,6 +50,11 @@ const TomatoCreate = ({ selectedContext, actions }) => {
 				setErrors({});
 				const token = await getAccessTokenSilently();
 				if (isAuthenticated) {
+					setTomato((prevTomatoState) => ({
+						...prevTomatoState,
+						description: ''
+					}));
+
 					actions.loadTomatoes(token, user.sub).then(() => {
 						setSaving(false);
 					});
@@ -84,9 +90,7 @@ const TomatoCreate = ({ selectedContext, actions }) => {
 			</form>
 		);
 	} else {
-		return (
-			<SignInMessage></SignInMessage>
-		);
+		return <SignInMessage></SignInMessage>;
 	}
 };
 
