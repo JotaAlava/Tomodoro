@@ -6,7 +6,9 @@ import BooleanInput from '../shared/BooleanInput';
 const ContextForm = ({ context, onSave, onChange, saving = false, errors }) => {
 	return (
 		<form onSubmit={onSave}>
-			<h2>{context && context.tomatoContextId ? 'Edit' : 'Add'} Context</h2>
+			<h2>
+				{context && context.tomatoContextId ? 'Edit' : 'Add'} Work Context
+			</h2>
 			{errors.onSave && (
 				<div className="alert alert-danger" role="alert">
 					{errors.onSave}

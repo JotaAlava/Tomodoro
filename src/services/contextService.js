@@ -1,5 +1,5 @@
 import { dataSource } from './dsService';
-import { postItem, deleteItem	 } from './itemService';
+import { postItem, deleteItem } from './itemService';
 import { CONSTANTS } from '../shared/shared';
 
 export async function getContexts(token, userId) {
@@ -15,6 +15,7 @@ export async function getContexts(token, userId) {
 			}
 		);
 	} catch (e) {
+		debugger;
 		throw new Error(e);
 	}
 }

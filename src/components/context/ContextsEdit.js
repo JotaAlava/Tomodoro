@@ -40,6 +40,7 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
 	async function handleSave(event) {
 		event.preventDefault();
 		setSaving(true);
+		toast.info('Creating work context!');
 
 		const token = await getAccessTokenSilently();
 

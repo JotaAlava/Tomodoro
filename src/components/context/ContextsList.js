@@ -40,7 +40,7 @@ const ContextsList = ({ contexts, selectable, selectedContext, ...props }) => {
 			selectedContext.tomatoContextId === tomatoContextId
 		) {
 			return {
-				backgroundColor: 'yellow'
+				backgroundColor: '#b3aa99'
 			};
 		} else {
 			return {

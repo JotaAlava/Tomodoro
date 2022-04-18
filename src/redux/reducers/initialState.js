@@ -10,5 +10,8 @@ export default {
 		isRunning: false,
 		time: 1500
 	},
-	notes: []
+	notes: {
+		current: undefined,
+		recent: []
+	}
 };

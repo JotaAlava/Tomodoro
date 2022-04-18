@@ -3,63 +3,41 @@ import { connect } from 'react-redux';
 import ReactQuill from 'react-quill';
 import { useAuth0 } from '@auth0/auth0-react';
 import * as dailyNoteActions from '../../redux/actions/dailyNoteActions';
-import { save, getDailyNote } from '../../services/dailyNoteService';
+import { getDailyNote } from '../../services/dailyNoteService';
 import Title from '../shared/Title';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 const DailyNotes = (props) => {
 	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
-	const [value, setValue] = useState('');
+	const [value, setValue] = useState(undefined);
 	const [saving, setSaving] = useState(false);
 	const [dailyNote, setDailyNote] = useState(undefined);
-	const [previousNotes, setPreviousNotes] = useState([]);
 
 	useEffect(async () => {
-		if (isAuthenticated) {
+		if (isAuthenticated && user && user.sub) {
 			const token = await getAccessTokenSilently();
-			const dailyNoteItem = await getDailyNote(token, user.sub);
-			const todayAsKey = new Date().toLocaleDateString();
-			const existingNote = dailyNoteItem[todayAsKey][0].note;
-			setPreviousNotes(pluckEarlierDates(dailyNoteItem, todayAsKey));
+			props.actions.loadNotes(token, user.sub).then((loadedNotes) => {
+				setValue(loadedNotes.current);
+			});
+			// const dailyNoteItem = await getDailyNote(token, user.sub);
 
-			setDailyNote(existingNote);
-			setValue(existingNote);
+			// setPreviousNotes(pluckEarlierDates(dailyNoteItem, todayAsKey));
+
+			// setDailyNote(existingNote);
+			// setValue(existingNote);
 		}
 	}, [isAuthenticated, dailyNote]);
 
-	const pluckEarlierDates = (noteItem, key) => {
-		const result = [];
-		const datesWithNotes = Object.keys(noteItem);
-		datesWithNotes.forEach((dateKey) => {
-			if (dateKey !== key) {
-				const entry = {
-					date: dateKey,
-					note: noteItem[dateKey][0].note
-				};
-
-				// If an entry already exists, then we have already selected the most recent version, continue.
-				if (!result.includes(entry)) {
-					result.push(entry);
-				}
-			}
-		});
-
-		return result;
-	};
-
 	const onSave = async (event) => {
 		event.preventDefault();
-
-		// Figure out if it's a new note or not
-		// If there is no note for today, then it is new. Create the item for it
 
 		console.log('Will save:');
 		console.log(value);
 
 		const token = await getAccessTokenSilently();
 
-		await props.notes.saveNotes(value, token, user.sub);
+		await props.actions.saveNotes(value, token, user.sub);
 
 		// If there is a note for today, then it is not new. Update the content of the note
 		// All done!
@@ -73,6 +51,7 @@ const DailyNotes = (props) => {
 	function RenderHtmlDangerously(prop) {
 		return <div dangerouslySetInnerHTML={createMarkup(prop.html)} />;
 	}
+
 	// TODO: Set a max heigh for the daily note so that it's scrollable instead of making the whole page scrollable
 	// TODO: Also add the ability to page over the notes of the last 10 days. Datasource already should return notes from yesterday
 	if (isAuthenticated) {
@@ -80,17 +59,26 @@ const DailyNotes = (props) => {
 			<main role="main" className="inner cover">
 				<Title text={'Daily Notes'}></Title>
 
-				<ReactQuill theme="snow" value={value} onChange={setValue} />
+				{props.notes.current === undefined || value === undefined ? (
+					<p>Loading daily note...</p>
+				) : (
+					<ReactQuill theme="snow" value={value} onChange={setValue} />
+				)}
+
 				<form onSubmit={onSave}>
-					<button type="submit" disabled={saving} className="btn btn-primary">
+					<button
+						type="submit"
+						disabled={saving}
+						className="btn btn-primary margin-top"
+					>
 						{saving ? 'Saving daily note...' : 'Save Note'}
 					</button>
 				</form>
 
 				<div className="previous-notes">
-					{previousNotes.length > 0 ? (
+					{props.notes.recent && props.notes.recent.length > 0 ? (
 						<>
-							{previousNotes.map((note, index) => {
+							{props.notes.recent.map((note, index) => {
 								return (
 									<>
 										<h2>{note.date}</h2>
@@ -131,7 +119,7 @@ function mapStateToProps(state) {
 // Map the call to dispatch into the props for cleaner dispatch
 function mapDispatchToProps(dispatch) {
 	return {
-		notes: bindActionCreators(dailyNoteActions, dispatch)
+		actions: bindActionCreators(dailyNoteActions, dispatch)
 	};
 }
 

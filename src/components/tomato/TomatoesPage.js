@@ -60,8 +60,20 @@ const TomatoesPage = (props) => {
 
 		props.context
 			.loadContexts(token, user.sub)
-			.then(() => {
+			.then((contexts) => {
 				setLoadingContexts(false);
+
+				// Select first work context that is set to default
+				let ctxToSelect = undefined;
+				contexts.forEach((ctx) => {
+					if (ctx.default) {
+						ctxToSelect = ctx;
+					}
+				});
+
+				if (ctxToSelect) {
+					props.context.selectContext(ctxToSelect);
+				}
 			})
 			.catch((err) => {
 				setErrors({ ...errors, contexts: err });
@@ -124,7 +136,7 @@ const TomatoesPage = (props) => {
 							<div className="lead">
 								<TomatoCreate></TomatoCreate>
 							</div>
-							<div className="lead">
+							<div className="lead margin-top">
 								{loadingTomatoes ? (
 									errors.tomatoes ? (
 										<ReloadOnError
@@ -147,7 +159,7 @@ const TomatoesPage = (props) => {
 													<h2>Tomatoes</h2>
 													<table
 														className="table table-borderless"
-														style={{ color: '#fff' }}
+														style={{ color: '#fff9ec' }}
 													>
 														<thead className="thead-dark">
 															<tr>

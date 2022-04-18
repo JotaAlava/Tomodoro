@@ -1,8 +1,10 @@
 import * as types from './actionTypes';
 import { beginApiCall, apiCallError } from './apiStatusActions';
 import { getDailyNote, save, update } from '../../services/dailyNoteService';
-export function loadNotesSuccess(tomatoes) {
-	return { type: types.LOAD_NOTES_SUCCESS, tomatoes };
+import { toast } from 'react-toastify';
+
+export function loadNotesSuccess(notes) {
+	return { type: types.LOAD_NOTES_SUCCESS, notes };
 }
 
 export function saveNoteSuccess(newTomato) {
@@ -17,8 +19,9 @@ export function loadNotes(token, userId) {
 	return function (dispatch) {
 		dispatch(beginApiCall());
 		return getDailyNote(token, userId)
-			.then((tomatoes) => {
-				dispatch(loadNotesSuccess(tomatoes));
+			.then((notes) => {
+				dispatch(loadNotesSuccess(notes));
+				return notes;
 			})
 			.catch((err) => {
 				dispatch(apiCallError(err));
@@ -28,9 +31,11 @@ export function loadNotes(token, userId) {
 }
 
 export function saveNotes(newTomato, token, userId) {
+	toast.info('Saving daily note...');
 	return function (dispatch) {
 		return save(newTomato, token, userId)
 			.then((newTomato) => {
+				toast.success('Daily note saved!');
 				dispatch(saveNoteSuccess(newTomato));
 			})
 			.catch((err) => {

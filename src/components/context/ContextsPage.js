@@ -9,11 +9,29 @@ import ContextsList from './ContextsList';
 import Loading from '../shared/Loading';
 import ReloadOnError from '../shared/ReloadOnError';
 import ContextCreateButton from '../context/ContextCreateButton';
+import { toast } from 'react-toastify';
+import { onSessionEnd } from '../../services/utility';
 
 const ContextsPage = (props) => {
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
-	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
+
+	const warnIfMoreThanOneDefault = (contexts) => {
+		let shouldWarn = 0;
+
+		contexts.forEach((ctx) => {
+			if (ctx.default) {
+				shouldWarn++;
+			}
+		});
+
+		if (shouldWarn > 1) {
+			toast.warn(
+				'Warning: More than one work context has been set as the default.'
+			);
+		}
+	};
 
 	const loadContexts = async () => {
 		const token = await getAccessTokenSilently();
@@ -21,11 +39,13 @@ const ContextsPage = (props) => {
 		if (user) {
 			props.actions
 				.loadContexts(token, user.sub)
-				.then(() => {
+				.then((res) => {
+					warnIfMoreThanOneDefault(res);
 					setLoading(false);
 				})
 				.catch((err) => {
 					setErrors({ ...errors, contexts: err });
+					onSessionEnd(err, logout);
 				});
 		}
 	};

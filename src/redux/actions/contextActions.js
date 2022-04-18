@@ -40,6 +40,9 @@ export function loadContexts(token, userId) {
 		return getContexts(token, userId)
 			.then((contexts) => {
 				dispatch(loadContextsSuccess(contexts));
+
+				// Is this an anti-pattern for redux?
+				return contexts;
 			})
 			.catch((err) => {
 				dispatch(apiCallError(err));

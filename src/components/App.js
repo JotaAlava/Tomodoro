@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import Header from './shared/Header';
-import Footer from './shared/Footer';
 import PageNotFound from './shared/PageNotFound';
 import Tomatoes from './tomato/TomatoesPage';
 import Contexts from './context/ContextsPage';
@@ -41,7 +40,6 @@ function App() {
 					<Route component={PageNotFound}></Route>
 				</Switch>
 				<ToastContainer autoClose={3000} hideProgressBar></ToastContainer>
-				<Footer></Footer>
 			</div>
 		</Auth0Provider>
 	);

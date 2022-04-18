@@ -7,7 +7,11 @@ export default function notesReducer(state = initialState.notes, action) {
 			// TODO: Replace the note with the new note
 			return { ...state, notes: action.note };
 		case types.LOAD_NOTES_SUCCESS:
-			return { ...state, notes: action.notes };
+			return {
+				...state,
+				current: action.notes.current,
+				recent: action.notes.recent
+			};
 		case types.UPDATE_NOTE_SUCCESS:
 			return state;
 		default:

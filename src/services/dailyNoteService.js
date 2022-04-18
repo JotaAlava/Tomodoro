@@ -48,10 +48,46 @@ export async function getDailyNote(token, userId) {
 		return byDate;
 	};
 
+	const pluckEarlierDates = (noteItem, keyToSkip) => {
+		const result = [];
+		const datesWithNotes = Object.keys(noteItem);
+		datesWithNotes.forEach((dateKey) => {
+			if (dateKey !== keyToSkip) {
+				const entry = {
+					date: dateKey,
+					note: noteItem[dateKey][0].note
+				};
+
+				// If an entry already exists, then we have already selected the most recent version, continue.
+				if (!result.includes(entry)) {
+					result.push(entry);
+				}
+			}
+		});
+
+		return result;
+	};
+
+	const buildFinalResult = (dailyNoteItem) => {
+		const todayAsKey = new Date().toLocaleDateString();
+		let result = {};
+
+		if (dailyNoteItem[todayAsKey]) {
+			result.current = dailyNoteItem[todayAsKey][0].note;
+			result.recent = pluckEarlierDates(dailyNoteItem, todayAsKey);
+		} else {
+			result.current = '';
+			result.recent = [];
+		}
+
+		return result;
+	};
+
 	return notes
 		.then(toViewModel)
 		.then(sort)
 		.then(groupByDay)
+		.then(buildFinalResult)
 		.catch(async (e) => {
 			console.log(e);
 			throw new Error(e);

@@ -26,9 +26,6 @@ const TomatoModal = (props) => {
 				<div className="modal-dialog">
 					<div
 						className="modal-content"
-						style={{
-							backgroundColor: '#333'
-						}}
 					>
 						<div className="modal-header">
 							<h5 className="modal-title" id="exampleModalLabel">
