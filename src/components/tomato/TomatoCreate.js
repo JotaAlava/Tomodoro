@@ -68,7 +68,7 @@ const TomatoCreate = ({ selectedContext, actions }) => {
 
 	if (isAuthenticated) {
 		return (
-			<form onSubmit={handleSave}>
+			<form onSubmit={handleSave} className="margin-top-small">
 				{errors.onSave && (
 					<div className="alert alert-danger" role="alert">
 						{errors.onSave}

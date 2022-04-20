@@ -11,21 +11,12 @@ const Header = () => {
 	return (
 		<header className="masthead mb-auto">
 			<div className="inner">
-				<h3 className="masthead-brand">Cover</h3>
+				<h3 className="masthead-brand">Tomodoro</h3>
 				<nav className="nav nav-masthead justify-content-center">
-					<NavLink
-						to="/"
-						className={inActiveClass}
-						activeclass={activeClass}
-						exact
-					>
-						Home
-					</NavLink>
 					<NavLink
 						to="/tomatoes"
 						className={inActiveClass}
 						activeclass={activeClass}
-						exact
 					>
 						Tomatoes
 					</NavLink>

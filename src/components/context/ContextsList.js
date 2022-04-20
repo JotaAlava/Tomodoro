@@ -105,6 +105,9 @@ const ContextsList = ({ contexts, selectable, selectedContext, ...props }) => {
 									<td>
 										<button
 											className="btn btn-primary"
+											type="button"
+											data-bs-dismiss="modal"
+											aria-label="Close"
 											onClick={() => select(ctx.tomatoContextId)}
 										>
 											Select

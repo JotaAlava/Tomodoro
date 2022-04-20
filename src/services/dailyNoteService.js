@@ -77,7 +77,7 @@ export async function getDailyNote(token, userId) {
 			result.recent = pluckEarlierDates(dailyNoteItem, todayAsKey);
 		} else {
 			result.current = '';
-			result.recent = [];
+			result.recent = pluckEarlierDates(dailyNoteItem, todayAsKey);
 		}
 
 		return result;

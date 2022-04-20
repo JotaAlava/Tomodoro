@@ -62,20 +62,21 @@ const DailyNotes = (props) => {
 				{props.notes.current === undefined || value === undefined ? (
 					<p>Loading daily note...</p>
 				) : (
-					<ReactQuill theme="snow" value={value} onChange={setValue} />
+					<>
+						<ReactQuill theme="snow" value={value} onChange={setValue} />
+						<form onSubmit={onSave}>
+							<button
+								type="submit"
+								disabled={saving}
+								className="btn btn-primary margin-top"
+							>
+								{saving ? 'Saving daily note...' : 'Save Note'}
+							</button>
+						</form>
+					</>
 				)}
 
-				<form onSubmit={onSave}>
-					<button
-						type="submit"
-						disabled={saving}
-						className="btn btn-primary margin-top"
-					>
-						{saving ? 'Saving daily note...' : 'Save Note'}
-					</button>
-				</form>
-
-				<div className="previous-notes">
+				<div className="previous-notes margin-top">
 					{props.notes.recent && props.notes.recent.length > 0 ? (
 						<>
 							{props.notes.recent.map((note, index) => {

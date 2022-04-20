@@ -140,12 +140,16 @@ html,
 	color: #fff9ec;
 }
 
+.ql-editor {
+	height: 250px;
+}
+
 .no-scroll {
 	overflow: hidden;
 }
 
 .previous-notes {
-	max-height: 500px;
+	max-height: 20rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
@@ -170,4 +174,16 @@ html,
 
 .margin-top {
 	margin-top: 10px;
+}
+
+#reset {
+	margin-left: 5px;
+}
+
+.controls__wrp {
+	margin-bottom: 5px;
+}
+
+.mt-auto {
+	margin-top: 10px !important;
 }

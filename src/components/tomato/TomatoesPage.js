@@ -125,7 +125,7 @@ const TomatoesPage = (props) => {
 		const noteSectionStyle = { minWidth: '40%' };
 
 		return (
-			<div className="flex-row">
+			<div className="flex-row" style={{ maxHeight: '90%' }}>
 				<div className="parent">
 					<div style={sectionStyle}>
 						<main role="main" className="inner cover tomatoes">

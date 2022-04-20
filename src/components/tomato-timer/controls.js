@@ -30,7 +30,11 @@ const Controls = (props) => {
 	};
 
 	const handlePlayPause = () => {
-		if (!props.tomatoTimer.isRunning && props.tomatoTimer.time > 0) {
+		if (props.tomatoTimer.time === 0) {
+			document.getElementById('beep').play();
+		}
+
+		if (!props.tomatoTimer.isRunning && props.tomatoTimer.time >= 0) {
 			props.actions.startTimer();
 			const interval = setInterval(() => {
 				props.actions.tickDown();
@@ -48,12 +52,22 @@ const Controls = (props) => {
 
 	return (
 		<div className="controls__wrp">
-			<button type="button" id="start_stop" onClick={handlePlayPause}>
+			<button
+				className="btn btn-primary"
+				type="button"
+				id="start_stop"
+				onClick={handlePlayPause}
+			>
 				<FontAwesomeIcon
 					icon={props.tomatoTimer.isRunning ? faPause : faPlay}
 				/>
 			</button>
-			<button type="button" id="reset" onClick={handleReset}>
+			<button
+				className="btn btn-primary"
+				type="button"
+				id="reset"
+				onClick={handleReset}
+			>
 				<FontAwesomeIcon icon={faRedo} />
 			</button>
 			<audio id="beep" src={bellSoundUrl} ref={audioSoundRef} preload="auto" />

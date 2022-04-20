@@ -1,6 +1,9 @@
 import React from 'react';
+import { browserHistory } from 'react-router-dom';
 
-const HomePage = () => {
+const HomePage = (props) => {
+	props.history.push('/tomatoes');
+
 	return (
 		<main role="main" className="inner cover">
 			<h1 className="cover-heading">Cover your page.</h1>

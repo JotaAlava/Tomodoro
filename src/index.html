@@ -3,9 +3,491 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Tomodoro</title>
+		<style>
+			#fake-app {
+				filter: blur(9px);
+			}
+
+			#start {
+				position: absolute;
+				z-index: 1;
+				top: 40%;
+				left: 50%;
+			}
+
+			#start-text {
+				color: #fff9ec;
+				position: absolute;
+				z-index: 1;
+				top: 45%;
+				left: 39%;
+			}
+
+			#start-title {
+				color: #fff9ec;
+				position: absolute;
+				z-index: 1;
+				top: 35%;
+				left: 49.2%;
+			}
+		</style>
 	</head>
 
 	<body>
-		<div id="app" class="body text-center"></div>
+		<div id="start-title" style="display: none">
+			<h3>Tomodoro</h3>
+		</div>
+		<div id="start" style="display: none">
+			<button id="get-started" class="btn btn-primary">Get started</button>
+		</div>
+		<div id="start-text" style="display: none">
+			<legend>The ultimate Pomodoro Technique implementation to:</legend>
+			<ul>
+				<li>Prevent little distractions that often derail the whole workday</li>
+				<li>Avoid working past the point of optimal productivity</li>
+				<li>Tame open-ended work that could take unlimited amounts of time</li>
+				<li>
+					Discover what you can actually accomplish in a day (instead of being
+					overly optimistic)
+				</li>
+				<li>Enjoy gamified goal-setting</li>
+			</ul>
+		</div>
+
+		<div id="fake-app" class="body text-center" style="display: none">
+			<div
+				class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column no-scroll"
+			>
+				<header class="masthead mb-auto">
+					<div class="inner">
+						<h3 class="masthead-brand">Tomodoro</h3>
+						<nav class="nav nav-masthead justify-content-center">
+							><a
+								aria-current="page"
+								class="nav-link active"
+								activeclass="nav-link active"
+								href="#"
+								>Tomatoes</a
+							><a class="nav-link" activeclass="nav-link active" href="#"
+								>Contexts</a
+							><a class="nav-link" activeclass="nav-link active" href="#"
+								>About</a
+							><a class="nav-link" activeclass="nav-link active" href="#"
+								>Account</a
+							>
+						</nav>
+					</div>
+				</header>
+				<div class="flex-row" style="max-height: 90%">
+					<div class="parent">
+						<div style="min-width: 60%">
+							<main role="main" class="inner cover tomatoes">
+								<div class="row timer">
+									<h1 id="time-left" class="text-center">Tomato Timer</h1>
+								</div>
+								<div class="lead">
+									<div class="row timer">
+										<h1 id="time-left" class="text-center">25:00</h1>
+										<div class="col-12"></div>
+										<div class="col-12 text-center">
+											<div class="controls__wrp"></div>
+										</div>
+									</div>
+								</div>
+								<div class="lead">
+									<form>
+										<div class="form-group">
+											<label for="tomato" style="font-size: smaller"
+												>description</label
+											>
+											<div class="field">
+												<input
+													id="tomato"
+													type="text"
+													name="description"
+													class="form-control"
+													value=""
+												/>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="lead margin-top">
+									<div class="row">
+										<div class="col-12 one-fold">
+											<h2>Tomatoes</h2>
+											<table
+												class="table table-borderless"
+												style="color: rgb(255, 249, 236)"
+											>
+												<thead class="thead-dark">
+													<tr>
+														<th>Description</th>
+														<th>Context</th>
+														<th>Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>No tomatoes.</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</main>
+						</div>
+						<div style="min-width: 40%">
+							<main role="main" class="inner cover">
+								<div class="row timer">
+									<h1 id="time-left" class="text-center">Daily Notes</h1>
+								</div>
+								<div class="quill">
+									<div class="ql-toolbar ql-snow">
+										<span class="ql-formats"
+											><span class="ql-header ql-picker"
+												><span
+													class="ql-picker-label"
+													tabindex="0"
+													role="button"
+													aria-expanded="false"
+													aria-controls="ql-picker-options-0"
+													><svg viewBox="0 0 18 18">
+														<polygon
+															class="ql-stroke"
+															points="7 11 9 13 11 11 7 11"
+														></polygon>
+														<polygon
+															class="ql-stroke"
+															points="7 7 9 5 11 7 7 7"
+														></polygon></svg></span
+												><span
+													class="ql-picker-options"
+													aria-hidden="true"
+													tabindex="-1"
+													id="ql-picker-options-0"
+													><span
+														tabindex="0"
+														role="button"
+														class="ql-picker-item"
+														data-value="1"
+													></span
+													><span
+														tabindex="0"
+														role="button"
+														class="ql-picker-item"
+														data-value="2"
+													></span
+													><span
+														tabindex="0"
+														role="button"
+														class="ql-picker-item"
+														data-value="3"
+													></span
+													><span
+														tabindex="0"
+														role="button"
+														class="ql-picker-item ql-selected"
+													></span></span></span
+											><select class="ql-header" style="display: none">
+												<option value="1"></option>
+												<option value="2"></option>
+												<option value="3"></option>
+												<option selected="selected"></option></select></span
+										><span class="ql-formats"
+											><button type="button" class="ql-bold">
+												<svg viewBox="0 0 18 18">
+													<path
+														class="ql-stroke"
+														d="M5,4H9.5A2.5,2.5,0,0,1,12,6.5v0A2.5,2.5,0,0,1,9.5,9H5A0,0,0,0,1,5,9V4A0,0,0,0,1,5,4Z"
+													></path>
+													<path
+														class="ql-stroke"
+														d="M5,9h5.5A2.5,2.5,0,0,1,13,11.5v0A2.5,2.5,0,0,1,10.5,14H5a0,0,0,0,1,0,0V9A0,0,0,0,1,5,9Z"
+													></path>
+												</svg></button
+											><button type="button" class="ql-italic">
+												<svg viewBox="0 0 18 18">
+													<line
+														class="ql-stroke"
+														x1="7"
+														x2="13"
+														y1="4"
+														y2="4"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="5"
+														x2="11"
+														y1="14"
+														y2="14"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="8"
+														x2="10"
+														y1="14"
+														y2="4"
+													></line>
+												</svg></button
+											><button type="button" class="ql-underline">
+												<svg viewBox="0 0 18 18">
+													<path
+														class="ql-stroke"
+														d="M5,3V9a4.012,4.012,0,0,0,4,4H9a4.012,4.012,0,0,0,4-4V3"
+													></path>
+													<rect
+														class="ql-fill"
+														height="1"
+														rx="0.5"
+														ry="0.5"
+														width="12"
+														x="3"
+														y="15"
+													></rect>
+												</svg></button
+											><button type="button" class="ql-link">
+												<svg viewBox="0 0 18 18">
+													<line
+														class="ql-stroke"
+														x1="7"
+														x2="11"
+														y1="7"
+														y2="11"
+													></line>
+													<path
+														class="ql-even ql-stroke"
+														d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"
+													></path>
+													<path
+														class="ql-even ql-stroke"
+														d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"
+													></path>
+												</svg></button></span
+										><span class="ql-formats"
+											><button type="button" class="ql-list" value="ordered">
+												<svg viewBox="0 0 18 18">
+													<line
+														class="ql-stroke"
+														x1="7"
+														x2="15"
+														y1="4"
+														y2="4"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="7"
+														x2="15"
+														y1="9"
+														y2="9"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="7"
+														x2="15"
+														y1="14"
+														y2="14"
+													></line>
+													<line
+														class="ql-stroke ql-thin"
+														x1="2.5"
+														x2="4.5"
+														y1="5.5"
+														y2="5.5"
+													></line>
+													<path
+														class="ql-fill"
+														d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"
+													></path>
+													<path
+														class="ql-stroke ql-thin"
+														d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"
+													></path>
+													<path
+														class="ql-stroke ql-thin"
+														d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"
+													></path>
+												</svg></button
+											><button type="button" class="ql-list" value="bullet">
+												<svg viewBox="0 0 18 18">
+													<line
+														class="ql-stroke"
+														x1="6"
+														x2="15"
+														y1="4"
+														y2="4"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="6"
+														x2="15"
+														y1="9"
+														y2="9"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="6"
+														x2="15"
+														y1="14"
+														y2="14"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="3"
+														x2="3"
+														y1="4"
+														y2="4"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="3"
+														x2="3"
+														y1="9"
+														y2="9"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="3"
+														x2="3"
+														y1="14"
+														y2="14"
+													></line>
+												</svg></button></span
+										><span class="ql-formats"
+											><button type="button" class="ql-clean">
+												<svg class="" viewBox="0 0 18 18">
+													<line
+														class="ql-stroke"
+														x1="5"
+														x2="13"
+														y1="3"
+														y2="3"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="6"
+														x2="9.35"
+														y1="12"
+														y2="3"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="11"
+														x2="15"
+														y1="11"
+														y2="15"
+													></line>
+													<line
+														class="ql-stroke"
+														x1="15"
+														x2="11"
+														y1="11"
+														y2="15"
+													></line>
+													<rect
+														class="ql-fill"
+														height="1"
+														rx="0.5"
+														ry="0.5"
+														width="7"
+														x="2"
+														y="14"
+													></rect>
+												</svg></button
+										></span>
+									</div>
+									<div class="ql-container ql-snow">
+										<div
+											class="ql-editor ql-blank"
+											data-gramm="false"
+											contenteditable="true"
+										>
+											<p><br /></p>
+										</div>
+										<div
+											class="ql-clipboard"
+											contenteditable="true"
+											tabindex="-1"
+										></div>
+										<div class="ql-tooltip ql-hidden">
+											<a
+												class="ql-preview"
+												rel="noopener noreferrer"
+												target="_blank"
+												href="about:blank"
+											></a
+											><input
+												type="text"
+												data-formula="e=mc^2"
+												data-link="https://quilljs.com"
+												data-video="Embed URL"
+											/><a class="ql-action"></a><a class="ql-remove"></a>
+										</div>
+									</div>
+								</div>
+								<div class="previous-notes margin-top">
+									<span>No previous notes.</span>
+								</div>
+							</main>
+						</div>
+					</div>
+				</div>
+				<div class="Toastify"></div>
+				<footer class="mastfoot mt-auto">
+					<div class="inner">
+						<p>
+							This application is for sale
+							<a href="mailto:admin@sophrosyn3.com">here</a>.
+						</p>
+					</div>
+				</footer>
+			</div>
+		</div>
+		<div id="app" class="body text-center" style="display: none"></div>
 	</body>
+	<script>
+		let timesExecuted = 0;
+		document.addEventListener(
+			'click',
+			function (event) {
+				if (timesExecuted < 1) {
+					// If the clicked element doesn't have the right selector, bail
+					if (!event.target.matches('#get-started')) return;
+
+					// Don't follow the link
+					event.preventDefault();
+
+					document.getElementById('app').style.display = 'flex';
+					document.getElementById('start').style.display = 'none';
+					document.getElementById('fake-app').style.display = 'none';
+					document.getElementById('start-text').style.display = 'none';
+					document.getElementById('start-title').style.display = 'none';
+
+					timesExecuted++;
+				}
+			},
+			false
+		);
+
+		document.addEventListener(
+			'DOMContentLoaded',
+			function () {
+				document.getElementById('start').style.display = 'flex';
+				document.getElementById('fake-app').style.display = 'flex';
+				document.getElementById('start-text').style.display = 'block';
+				document.getElementById('start-title').style.display = 'block';
+			},
+			false
+		);
+
+		window.addEventListener('keydown', function (e) {
+			if (timesExecuted < 1) {
+				e.preventDefault();
+				document.getElementById('get-started').click();
+
+				timesExecuted++;
+			}
+		});
+	</script>
 </html>
