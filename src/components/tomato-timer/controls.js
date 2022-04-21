@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useClockify } from './clockify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faRedo } from '@fortawesome/free-solid-svg-icons';
+import {
+	faPlay,
+	faPause,
+	faRedo,
+	faCoffee
+} from '@fortawesome/free-solid-svg-icons';
 import * as tomatoTimerActions from '../../redux/actions/tomatoTimerActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +16,10 @@ const Controls = (props) => {
 	const [tomatoInterval, setTomatoInterval] = useState(false);
 
 	useEffect(async () => {
+		if (props.tomatoTimer.time === 0) {
+			document.getElementById('beep').play();
+		}
+
 		if (props.tomatoTimer.time <= 0) {
 			props.actions.stopTimer();
 			clearInterval(tomatoInterval);
@@ -30,16 +39,8 @@ const Controls = (props) => {
 	};
 
 	const handlePlayPause = () => {
-		if (props.tomatoTimer.time === 0) {
-			document.getElementById('beep').play();
-		}
-
 		if (!props.tomatoTimer.isRunning && props.tomatoTimer.time >= 0) {
-			props.actions.startTimer();
-			const interval = setInterval(() => {
-				props.actions.tickDown();
-			}, 1000);
-			setTomatoInterval(interval);
+			timerStart();
 		} else if (props.tomatoTimer.isRunning) {
 			props.actions.stopTimer();
 			clearInterval(tomatoInterval);
@@ -48,6 +49,26 @@ const Controls = (props) => {
 			// User should click "reset" in order to reset the timer
 			// Then start to start a new session
 		}
+	};
+
+	const timerStart = () => {
+		props.actions.startTimer();
+		const interval = setInterval(() => {
+			props.actions.tickDown();
+		}, 1000);
+		setTomatoInterval(interval);
+	};
+
+	const handleShortBreak = () => {
+		props.actions.startShortBreak();
+		clearInterval(tomatoInterval);
+		timerStart();
+	};
+
+	const handleLongBreak = () => {
+		props.actions.startLongBreak();
+		clearInterval(tomatoInterval);
+		timerStart();
 	};
 
 	return (
@@ -69,6 +90,23 @@ const Controls = (props) => {
 				onClick={handleReset}
 			>
 				<FontAwesomeIcon icon={faRedo} />
+			</button>
+			<button
+				className="btn btn-warning"
+				type="button"
+				id="reset"
+				onClick={handleShortBreak}
+			>
+				<FontAwesomeIcon icon={faCoffee} />
+			</button>
+			<button
+				className="btn btn-warning"
+				type="button"
+				id="reset"
+				onClick={handleLongBreak}
+			>
+				<FontAwesomeIcon icon={faCoffee} />
+				<FontAwesomeIcon icon={faCoffee} />
 			</button>
 			<audio id="beep" src={bellSoundUrl} ref={audioSoundRef} preload="auto" />
 		</div>

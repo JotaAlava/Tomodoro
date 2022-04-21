@@ -226,7 +226,7 @@ const TomatoesPage = (props) => {
 
 																		result.unshift(
 																			<tr
-																				key={keyIndex}
+																				key={keyIndex + keyName}
 																				style={{ fontWeight: 'bold' }}
 																			>
 																				<td>

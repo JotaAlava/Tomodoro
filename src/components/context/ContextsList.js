@@ -81,10 +81,9 @@ const ContextsList = ({ contexts, selectable, selectedContext, ...props }) => {
 			<table className="table table-borderless" style={fonts}>
 				<thead className="thead-dark">
 					<tr>
-						<th scope="col">Label</th>
+						<th scope="col">Work Context</th>
 						<th scope="col">Default</th>
-						<th scope="col">Private</th>
-						<th scope="col"></th>
+						{/* <th scope="col">Shared</th> */}
 					</tr>
 				</thead>
 				<tbody>
@@ -100,7 +99,7 @@ const ContextsList = ({ contexts, selectable, selectedContext, ...props }) => {
 											{ctx.label}
 										</Link>
 									</td>
-									<td>{booleanToEnglish(ctx.private)}</td>
+									{/* <td>{booleanToEnglish(ctx.private)}</td> */}
 									<td>{booleanToEnglish(ctx.default)}</td>
 									<td>
 										<button
@@ -123,7 +122,7 @@ const ContextsList = ({ contexts, selectable, selectedContext, ...props }) => {
 											{ctx.label}
 										</Link>
 									</td>
-									<td>{booleanToEnglish(ctx.private)}</td>
+									{/* <td>{booleanToEnglish(ctx.private)}</td> */}
 									<td>{booleanToEnglish(ctx.default)}</td>
 									<RemovableRow
 										onConfirm={remove}

@@ -17,3 +17,11 @@ export function tickDown() {
 export function resetTimer() {
 	return { type: types.TOMATO_TIMER_RESET };
 }
+
+export function startShortBreak() {
+	return { type: types.START_SHORT_BREAK };
+}
+
+export function startLongBreak() {
+	return { type: types.START_LONG_BREAK };
+}

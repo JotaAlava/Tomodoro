@@ -152,6 +152,7 @@ html,
 	max-height: 20rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	border: 1px solid #ccc;
 }
 
 /* width */
@@ -186,4 +187,13 @@ html,
 
 .mt-auto {
 	margin-top: 10px !important;
+}
+
+.other-page {
+	min-height: 90%;
+}
+
+.empty-notes {
+	height: 325px;
+	padding-top: 100px;
 }

@@ -11,6 +11,7 @@ import ReloadOnError from '../shared/ReloadOnError';
 import ContextCreateButton from '../context/ContextCreateButton';
 import { toast } from 'react-toastify';
 import { onSessionEnd } from '../../services/utility';
+import SignInMessage from '../shared/SignInMessage';
 
 const ContextsPage = (props) => {
 	const [errors, setErrors] = useState({});
@@ -63,30 +64,36 @@ const ContextsPage = (props) => {
 		return errors && errors.contexts ? (
 			<ReloadOnError name={'contexts'} retry={loadContexts}></ReloadOnError>
 		) : (
-			<Loading></Loading>
+			<div className="other-page">
+				<Loading></Loading>
+			</div>
 		);
 	}
 	if (isAuthenticated) {
 		if (props.contexts.length === 0) {
 			return loading ? (
-				<Loading></Loading>
+				<div className="other-page">
+					<Loading></Loading>
+				</div>
 			) : (
-				<main role="main" className="inner cover">
-					<h1 className="cover-heading">Contexts</h1>
+				<main role="main" className="inner cover other-page">
+					<h1 className="cover-heading">Work Contexts</h1>
 					<p className="lead">
 						<ContextCreateButton onClick={createContext}></ContextCreateButton>
 					</p>
-					<p className="lead">
+					<p className="lead other-page">
 						<h3>No contexts</h3>
 					</p>
 				</main>
 			);
 		} else {
 			return loading ? (
-				<Loading></Loading>
+				<div className="other-page">
+					<Loading></Loading>
+				</div>
 			) : (
-				<main role="main" className="inner cover">
-					<h1 className="cover-heading">Contexts</h1>
+				<main role="main" className="inner cover other-page">
+					<h1 className="cover-heading">Work Contexts</h1>
 					<div className="lead">
 						<ContextCreateButton onClick={createContext}></ContextCreateButton>
 					</div>
@@ -98,10 +105,10 @@ const ContextsPage = (props) => {
 		}
 	} else {
 		return (
-			<>
-				<h2>Contexts</h2>
-				<h3>Sign-in to see your contexts.</h3>
-			</>
+			<div className="other-page">
+				<h2>Work Contexts</h2>
+				<SignInMessage></SignInMessage>
+			</div>
 		);
 	}
 };

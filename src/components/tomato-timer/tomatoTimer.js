@@ -12,10 +12,12 @@ const TomatoTimer = (props) => {
 			</h1>
 
 			<div className="col-12">
-				{props.selectedContext && (
+				{props.selectedContext ? (
 					<h2 className="text-center">
 						Work for {props.selectedContext.label}
 					</h2>
+				) : (
+					<h2 className="text-center">No work context selected.</h2>
 				)}
 			</div>
 			<div className="col-12 text-center">

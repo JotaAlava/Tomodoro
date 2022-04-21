@@ -60,7 +60,7 @@ const DailyNotes = (props) => {
 				<Title text={'Daily Notes'}></Title>
 
 				{props.notes.current === undefined || value === undefined ? (
-					<p>Loading daily note...</p>
+					<p className="empty-notes">Loading daily note...</p>
 				) : (
 					<>
 						<ReactQuill theme="snow" value={value} onChange={setValue} />
@@ -81,18 +81,18 @@ const DailyNotes = (props) => {
 						<>
 							{props.notes.recent.map((note, index) => {
 								return (
-									<>
+									<div key={note.date} className="margin-top">
 										<h2>{note.date}</h2>
+										<hr></hr>
 										<RenderHtmlDangerously
-											key={index}
 											html={note.note}
 										></RenderHtmlDangerously>
-									</>
+									</div>
 								);
 							})}
 						</>
 					) : (
-						<span>No previous notes.</span>
+						<span className="empty-notes">No previous notes.</span>
 					)}
 				</div>
 			</main>

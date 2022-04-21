@@ -21,12 +21,15 @@ const AccountPage = () => {
 	if (isAuthenticated) {
 		return (
 			<>
-				<div>
+				<main role="main" className="inner cover other-page">
 					<img src={user.picture} alt={user.name} />
-					<h2>{user.name}</h2>
-					<p>{user.email}</p>
-				</div>
-				<LogoutButton></LogoutButton>
+					<h1>{user.name}</h1>
+					<hr></hr>
+					<div>
+						Username: <p>{user.email}</p>
+					</div>
+					<LogoutButton></LogoutButton>
+				</main>
 			</>
 		);
 	} else {

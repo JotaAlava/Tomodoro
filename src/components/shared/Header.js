@@ -25,7 +25,7 @@ const Header = () => {
 						className={inActiveClass}
 						activeclass={activeClass}
 					>
-						Contexts
+						Work Contexts
 					</NavLink>
 					<NavLink
 						to="/about"
