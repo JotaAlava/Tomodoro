@@ -149,7 +149,7 @@ html,
 }
 
 .previous-notes {
-	max-height: 20rem;
+	max-height: 22rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	border: 1px solid #ccc;
@@ -196,4 +196,11 @@ html,
 .empty-notes {
 	height: 325px;
 	padding-top: 100px;
+}
+
+.empty-previous-notes {
+	height: 27rem;
+	display: flex;
+	justify-content: center;
+	padding-top: 25px;
 }
