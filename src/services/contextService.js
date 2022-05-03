@@ -15,7 +15,6 @@ export async function getContexts(token, userId) {
 			}
 		);
 	} catch (e) {
-		debugger;
 		throw new Error(e);
 	}
 }

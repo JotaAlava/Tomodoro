@@ -2,18 +2,18 @@ import React from 'react';
 
 const AboutPage = () => {
 	return (
-		<main role="main" className="inner cover other-page">
-			<h1>About Tomodoro</h1>
+		<section className="holy-grail-content">
+			<h1>About Tomato Timer</h1>
 			<p>
-				Tomodoro is an implementation of the Pomodoro Technique, which is a time
-				management system. This system helps people to maximize time efficiency.
-				The Pomodoro Technique requires you to break your workday into 25-minute
-				chunks separated by 5-minute breaks. These intervals are referred to as
-				pomodoros. After about four pomodoros, you take a longer break of 15
-				minutes.
+				Tomato Timer is an implementation of the Pomodoro Technique, which is a
+				time management system. This system helps people to maximize time
+				efficiency. The Pomodoro Technique requires you to break your workday
+				into 25-minute chunks separated by 5-minute breaks. These intervals are
+				referred to as pomodoros. After about four pomodoros, you take a longer
+				break of 15 minutes.
 			</p>
 
-			<h1>The Tomodoro Twist</h1>
+			<h1>The Sophrosyn3 LLC Twist</h1>
 			<h5>Track work by work context.</h5>
 			<p>
 				This feature allows you to jump around different types of work and
@@ -37,7 +37,7 @@ const AboutPage = () => {
 				point-by-point essay demonstrating all the work that you have done for
 				your employer.
 			</p>
-		</main>
+		</section>
 	);
 };
 

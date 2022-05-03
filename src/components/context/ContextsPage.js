@@ -62,37 +62,51 @@ const ContextsPage = (props) => {
 
 	if (props.loading) {
 		return errors && errors.contexts ? (
-			<ReloadOnError name={'contexts'} retry={loadContexts}></ReloadOnError>
+			<section className="holy-grail-content">
+				<ReloadOnError name={'contexts'} retry={loadContexts}></ReloadOnError>
+			</section>
 		) : (
-			<div className="other-page">
+			<section className="holy-grail-content">
 				<Loading></Loading>
-			</div>
+			</section>
+			// <div className="other-page">
+			// 	<Loading></Loading>
+			// </div>
 		);
 	}
 	if (isAuthenticated) {
 		if (props.contexts.length === 0) {
 			return loading ? (
-				<div className="other-page">
+				// <div className="other-page">
+				// 	<Loading></Loading>
+				// </div>
+				<section className="holy-grail-content">
 					<Loading></Loading>
-				</div>
+				</section>
 			) : (
-				<main role="main" className="inner cover other-page">
+				<section className="holy-grail-content">
 					<h1 className="cover-heading">Work Contexts</h1>
 					<p className="lead">
 						<ContextCreateButton onClick={createContext}></ContextCreateButton>
 					</p>
-					<p className="lead other-page">
+					<div className="lead other-page">
 						<h3>No contexts</h3>
-					</p>
-				</main>
+					</div>
+				</section>
+				// <main role="main" className="inner cover other-page">
+
+				// </main>
 			);
 		} else {
 			return loading ? (
-				<div className="other-page">
+				<section className="holy-grail-content">
 					<Loading></Loading>
-				</div>
+				</section>
 			) : (
-				<main role="main" className="inner cover other-page">
+				// <div className="other-page">
+				// 	<Loading></Loading>
+				// </div>
+				<section className="holy-grail-content">
 					<h1 className="cover-heading">Work Contexts</h1>
 					<div className="lead">
 						<ContextCreateButton onClick={createContext}></ContextCreateButton>
@@ -100,15 +114,21 @@ const ContextsPage = (props) => {
 					<div className="lead">
 						<ContextsList contexts={props.contexts}></ContextsList>
 					</div>
-				</main>
+				</section>
+				// <main role="main" className="inner cover other-page">
+
+				// </main>
 			);
 		}
 	} else {
 		return (
-			<div className="other-page">
+			<section className="holy-grail-content">
 				<h2>Work Contexts</h2>
 				<SignInMessage></SignInMessage>
-			</div>
+			</section>
+			// <div className="other-page">
+
+			// </div>
 		);
 	}
 };

@@ -56,13 +56,16 @@ const DailyNotes = (props) => {
 	// TODO: Also add the ability to page over the notes of the last 10 days. Datasource already should return notes from yesterday
 	if (isAuthenticated) {
 		return (
-			<main role="main" className="inner cover">
+			<>
 				<Title text={'Daily Notes'}></Title>
-
 				{props.notes.current === undefined || value === undefined ? (
-					<p className="previous-notes empty-notes">Loading daily note...</p>
+					<div className="note-box mega-margin-bottom">
+						<p className="previous-notes empty-notes loading-quill">
+							Loading daily note...
+						</p>
+					</div>
 				) : (
-					<>
+					<div className="note-box">
 						<ReactQuill theme="snow" value={value} onChange={setValue} />
 						<form onSubmit={onSave}>
 							<button
@@ -73,15 +76,17 @@ const DailyNotes = (props) => {
 								{saving ? 'Saving daily note...' : 'Save Note'}
 							</button>
 						</form>
-					</>
+					</div>
 				)}
-
 				{props.notes.recent && props.notes.recent.length > 0 ? (
-					<div className="previous-notes margin-top">
-						{props.notes.recent.map((note, index) => {
+					<div className="note-box note-box-borders note-scroll margin-top">
+						{props.notes.recent.map((note) => {
 							return (
-								<div key={note.date} className="margin-top">
-									<h2>{note.date}</h2>
+								<div
+									key={note.date}
+									className="margin-top justify-previous-note"
+								>
+									<h2 className="align-date">{note.date}</h2>
 									<hr></hr>
 									<RenderHtmlDangerously
 										html={note.note}
@@ -91,11 +96,36 @@ const DailyNotes = (props) => {
 						})}
 					</div>
 				) : (
-					<div className="previous-notes margin-top empty-previous-notes">
-						<span className="empty-notes">No previous notes.</span>
+					<div className="note-box note-box-borders note-scroll margin-top">
+						<span className="empty-notes empty-previous-notes">
+							No previous notes.
+						</span>
 					</div>
 				)}
-			</main>
+			</>
+
+			// <main role="main" className="inner cover">
+
+			// {props.notes.recent && props.notes.recent.length > 0 ? (
+			// 	<div className="previous-notes margin-top">
+			// {props.notes.recent.map((note, index) => {
+			// 	return (
+			// 		<div key={note.date} className="margin-top">
+			// 			<h2>{note.date}</h2>
+			// 			<hr></hr>
+			// 			<RenderHtmlDangerously
+			// 				html={note.note}
+			// 			></RenderHtmlDangerously>
+			// 		</div>
+			// 	);
+			// })}
+			// 	</div>
+			// ) : (
+			// 	<div className="previous-notes margin-top empty-previous-notes">
+			// 		<span className="empty-notes">No previous notes.</span>
+			// 	</div>
+			// )}
+			// </main>
 		);
 	} else {
 		return (

@@ -16,7 +16,7 @@ const TomatoContextsPicker = (props) => {
 	const refreshContexts = async () => {
 		const token = await getAccessTokenSilently();
 		setLoadingContexts(true);
-		props.context
+		props.actions
 			.loadContexts(token, user.sub)
 			.then(() => {
 				setLoadingContexts(false);

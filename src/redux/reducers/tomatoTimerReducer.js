@@ -1,10 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-// In seconds...
-const shortBreak = 300;
-const longBreak = 900;
-
 export default function tomatoTimerReducer(
 	state = initialState.tomatoTimer,
 	action
@@ -36,21 +32,21 @@ export default function tomatoTimerReducer(
 			return JSON.parse(
 				JSON.stringify({
 					...state,
-					time: initialState.tomatoTimer.time
+					time: state.workLength
 				})
 			);
 		case types.START_SHORT_BREAK:
 			return JSON.parse(
 				JSON.stringify({
 					...state,
-					time: shortBreak
+					time: state.shortBreak
 				})
 			);
 		case types.START_LONG_BREAK:
 			return JSON.parse(
 				JSON.stringify({
 					...state,
-					time: longBreak
+					time: state.longBreak
 				})
 			);
 		default:

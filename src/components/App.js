@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import Header from './shared/Header';
 import Footer from './shared/Footer';
@@ -22,28 +21,31 @@ const auth0 = {
 
 function App() {
 	return (
-		<Auth0Provider
-			domain={auth0.domain}
-			clientId={auth0.clientId}
-			audience={auth0.audience}
-			redirectUri={window.location.origin}
-			scope={'openid'}
-		>
-			<div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column no-scroll">
-				<Header />
-				<Switch>
-					<Route exact path="/" component={HomePage}></Route>
-					<Route path="/about" component={AboutPage}></Route>
-					<Route path="/tomatoes" component={Tomatoes}></Route>
-					<Route path="/contexts/:id" component={ContextsEdit}></Route>
-					<Route path="/contexts" component={Contexts}></Route>
-					<Route path="/account" component={AccountPage}></Route>
-					<Route component={PageNotFound}></Route>
-				</Switch>
+		<div className="holy-grail">
+			<Auth0Provider
+				domain={auth0.domain}
+				clientId={auth0.clientId}
+				audience={auth0.audience}
+				redirectUri={window.location.origin}
+				scope={'openid'}
+			>
+				<Header></Header>
+
+				<div className="holy-grail-body">
+					<Switch>
+						<Route path="/about" component={AboutPage}></Route>
+						<Route path="/tomatoes" component={Tomatoes}></Route>
+						<Route exact path="/" component={Tomatoes}></Route>
+						<Route path="/contexts/:id" component={ContextsEdit}></Route>
+						<Route path="/contexts" component={Contexts}></Route>
+						<Route path="/account" component={AccountPage}></Route>
+						<Route component={PageNotFound}></Route>
+					</Switch>
+				</div>
 				<ToastContainer autoClose={3000} hideProgressBar></ToastContainer>
 				<Footer></Footer>
-			</div>
-		</Auth0Provider>
+			</Auth0Provider>
+		</div>
 	);
 }
 

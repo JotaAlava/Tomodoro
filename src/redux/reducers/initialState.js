@@ -8,10 +8,15 @@ export default {
 	selectedContext: null,
 	tomatoTimer: {
 		isRunning: false,
-		time: 1500
+		// In seconds...
+		time: 1500,
+		workLength: 1500,
+		shortBreakLength: 300,
+		longBreakLength: 900
 	},
 	notes: {
 		current: undefined,
 		recent: []
-	}
+	},
+	todos: []
 };

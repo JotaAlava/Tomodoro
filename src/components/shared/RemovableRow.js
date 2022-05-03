@@ -24,7 +24,7 @@ const RemovableRow = (props) => {
 	return removeList[props.itemId] ? (
 		<td key={index + props.itemId}>
 			<a
-				href="#"
+				className="pseudo-link"
 				onClick={() => {
 					props.onConfirm(props.itemId);
 				}}
@@ -33,7 +33,7 @@ const RemovableRow = (props) => {
 				Yep
 			</a>{' '}
 			<a
-				href="#"
+				className="pseudo-link"
 				onClick={() => {
 					notSure(props.itemId);
 				}}
@@ -45,7 +45,7 @@ const RemovableRow = (props) => {
 	) : (
 		<td key={index + props.itemId}>
 			<a
-				href="#"
+				className="pseudo-link"
 				onClick={() => {
 					areYouSure(props.itemId);
 				}}

@@ -24,7 +24,7 @@ const ReAssignContext = (props) => {
 	return removeList[props.itemId] ? (
 		<td key={index + props.itemId}>
 			<a
-				href="#"
+				className="pseudo-link"
 				onClick={() => {
 					notSure();
 					props.onConfirm(props.itemId);
@@ -34,7 +34,7 @@ const ReAssignContext = (props) => {
 				Re-Assign
 			</a>{' '}
 			<a
-				href="#"
+				className="pseudo-link"
 				onClick={() => {
 					notSure(props.itemId);
 				}}
@@ -46,7 +46,7 @@ const ReAssignContext = (props) => {
 	) : (
 		<td key={index + props.itemId}>
 			<a
-				href="#"
+				className="pseudo-link"
 				onClick={() => {
 					areYouSure(props.itemId);
 				}}

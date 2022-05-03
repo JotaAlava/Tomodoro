@@ -5,46 +5,48 @@ import BooleanInput from '../shared/BooleanInput';
 
 const ContextForm = ({ context, onSave, onChange, saving = false, errors }) => {
 	return (
-		<form onSubmit={onSave}>
-			<h2>
-				{context && context.tomatoContextId ? 'Edit' : 'Add'} Work Context
-			</h2>
-			{errors.onSave && (
-				<div className="alert alert-danger" role="alert">
-					{errors.onSave}
-				</div>
-			)}
-			<TextInput
-				id="label"
-				name="label"
-				label="Label"
-				value={context.label}
-				onChange={onChange}
-				error={errors.label}
-			/>
-			<BooleanInput
-				id="private"
-				name="private"
-				label="private"
-				value={context.private}
-				onChange={onChange}
-				error={errors.private}
-			/>
+		<section className="holy-grail-content">
+			<form onSubmit={onSave}>
+				<h2>
+					{context && context.tomatoContextId ? 'Edit' : 'Add'} Work Context
+				</h2>
+				{errors.onSave && (
+					<div className="alert alert-danger" role="alert">
+						{errors.onSave}
+					</div>
+				)}
+				<TextInput
+					id="label"
+					name="label"
+					label="Label"
+					value={context.label}
+					onChange={onChange}
+					error={errors.label}
+				/>
+				<BooleanInput
+					id="private"
+					name="private"
+					label="private"
+					value={context.private}
+					onChange={onChange}
+					error={errors.private}
+				/>
 
-			<BooleanInput
-				id="default"
-				name="default"
-				label="default"
-				value={context.default}
-				onChange={onChange}
-				error={errors.default}
-			/>
+				<BooleanInput
+					id="default"
+					name="default"
+					label="default"
+					value={context.default}
+					onChange={onChange}
+					error={errors.default}
+				/>
 
-			{saving}
-			<button type="submit" disabled={saving} className="btn btn-primary">
-				{saving ? 'Saving...' : 'Save'}
-			</button>
-		</form>
+				{saving}
+				<button type="submit" disabled={saving} className="btn btn-primary">
+					{saving ? 'Saving...' : 'Save'}
+				</button>
+			</form>
+		</section>
 	);
 };
 

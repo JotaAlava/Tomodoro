@@ -5,6 +5,7 @@ import tomatoReducer from './tomatoReducers';
 import selectedContextReducers from './selectedContextReducers';
 import tomatoTimerReducer from './tomatoTimerReducer';
 import notesReducer from './notesReducer';
+import todoReducer from './todoReducer';
 
 // This is where state gets combine into what gets passed as input to "mapStateToProps"
 const rootReducer = combineReducers({
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
 	apiCallsInProgress: apiCallStatusReducer,
 	selectedContext: selectedContextReducers,
 	tomatoTimer: tomatoTimerReducer,
-	notes: notesReducer
+	notes: notesReducer,
+	todos: todoReducer
 });
 
 export default rootReducer;

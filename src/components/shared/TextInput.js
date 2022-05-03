@@ -21,6 +21,7 @@ function TextInput(props) {
 					name={props.name}
 					className="form-control"
 					value={props.value}
+					disabled={props.disabled}
 				/>
 			</div>
 			{props.error && <div className="alert alert-danger">{props.error}</div>}
