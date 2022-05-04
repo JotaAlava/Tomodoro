@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import LogoutButton from '../shared/LogoutButton';
 import Loading from '../shared/Loading';
 import Settings from './Settings';
+import Title from '../shared/Title';
 
 const AccountPage = () => {
 	const { user, isAuthenticated, isLoading } = useAuth0();
@@ -31,8 +32,9 @@ const AccountPage = () => {
 			<>
 				<section className="holy-grail-content">
 					<Settings></Settings>
-					<hr></hr>
-					<h1>Account</h1>
+				</section>
+				<section className="holy-grail-content">
+					<Title text={'Account'}></Title>
 					<img src={user.picture} alt={user.name} />
 					<h1>{user.name}</h1>
 					<div>

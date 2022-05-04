@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import * as contextActions from '../../redux/actions/contextActions';
 // Prop types helps us specify that props that our component accepts
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import ContextForm from './ContextForm';
-import Loading from '../shared/Loading';
 import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
+
+import * as contextActions from '../../redux/actions/contextActions';
+import ContextForm from './ContextForm';
+import Loading from '../shared/Loading';
+
 
 const emptyCtx = {
 	created: null,

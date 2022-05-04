@@ -20,11 +20,11 @@ const TomatoesPage = (props) => {
 				<section className="holy-grail-content mitad">
 					<TomatoesTable></TomatoesTable>
 				</section>
-				<section className="holy-grail-content">
-					<DailyNotes></DailyNotes>
-				</section>
 				<section className="holy-grail-content-2">
 					<Todo></Todo>
+				</section>
+				<section className="holy-grail-content">
+					<DailyNotes></DailyNotes>
 				</section>
 			</>
 		);

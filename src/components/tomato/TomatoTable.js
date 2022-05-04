@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { useAuth0 } from '@auth0/auth0-react';
+import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
+
 import * as tomatoActions from '../../redux/actions/tomatoActions';
 import * as contextActions from '../../redux/actions/contextActions';
-import { connect } from 'react-redux';
 import TomatoModal from '../tomato/TomatoModal';
 import ReloadOnError from '../shared/ReloadOnError';
 import TomatoCreate from './TomatoCreate';
@@ -12,8 +15,7 @@ import ReAssignContext from '../shared/ReAssignContext';
 import Loading from '../shared/Loading';
 import TomatoTimer from '../tomato-timer/tomatoTimer';
 import Title from '../shared/Title';
-import { useAuth0 } from '@auth0/auth0-react';
-import { toast } from 'react-toastify';
+import * as settingsActions from '../../redux/actions/settingsActions';
 
 const TomatoesTable = (props) => {
 	const [errors, setErrors] = useState({});
@@ -24,6 +26,7 @@ const TomatoesTable = (props) => {
 
 	useEffect(async () => {
 		if (isAuthenticated) {
+			loadSettings();
 			loadTomatoes();
 			loadContexts();
 		}
@@ -57,6 +60,13 @@ const TomatoesTable = (props) => {
 				setSaving(false);
 				setErrors({ onSave: error.result.message });
 			});
+	};
+
+	const loadSettings = async () => {
+		const token = await getAccessTokenSilently();
+		props.settings.loadSettings(token, user.sub).then(() => {
+			toast.info('Settings loaded');
+		});
 	};
 
 	const loadContexts = async () => {
@@ -260,6 +270,7 @@ TomatoesTable.propTypes = {
 	tomato: PropTypes.object.isRequired,
 	context: PropTypes.object.isRequired,
 	selectedContext: PropTypes.object,
+	settings: PropTypes.object,
 	contexts: PropTypes.array.isRequired
 };
 
@@ -276,7 +287,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		tomato: bindActionCreators(tomatoActions, dispatch),
-		context: bindActionCreators(contextActions, dispatch)
+		context: bindActionCreators(contextActions, dispatch),
+		settings: bindActionCreators(settingsActions, dispatch)
 	};
 }
 

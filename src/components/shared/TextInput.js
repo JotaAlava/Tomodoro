@@ -34,7 +34,7 @@ TextInput.propTypes = {
 	name: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired,
-	value: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	error: PropTypes.string,
 	disabled: PropTypes.bool
 };

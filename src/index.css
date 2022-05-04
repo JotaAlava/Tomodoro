@@ -76,6 +76,7 @@ html,
 	color: rgba(255, 255, 255, 0.5);
 	background-color: transparent;
 	border-bottom: 0.25rem solid transparent;
+	cursor: pointer;
 }
 
 .nav-masthead .nav-link:hover,

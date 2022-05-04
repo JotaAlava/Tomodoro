@@ -39,16 +39,45 @@ export default function tomatoTimerReducer(
 			return JSON.parse(
 				JSON.stringify({
 					...state,
-					time: state.shortBreak
+					time: state.shortBreakLength
 				})
 			);
 		case types.START_LONG_BREAK:
 			return JSON.parse(
 				JSON.stringify({
 					...state,
-					time: state.longBreak
+					time: state.longBreakLength
 				})
 			);
+		case types.LOAD_SETTINGS_SUCCESS:
+			return JSON.parse(
+				JSON.stringify({
+					...state,
+					workLength: action.settings.workLength,
+					shortBreakLength: action.settings.shortBreakLength,
+					longBreakLength: action.settings.longBreakLength
+				})
+			);
+		case types.SET_SETTINGS_SUCCESS:
+			return JSON.parse(
+				JSON.stringify({
+					...state,
+					workLength: action.settings.workLength,
+					shortBreakLength: action.settings.shortBreakLength,
+					longBreakLength: action.settings.longBreakLength
+				})
+			);
+		case types.SAVE_SETTINGS_SUCCESS:
+			console.log(action);
+			return state;
+		// return JSON.parse(
+		// 	JSON.stringify({
+		// 		...state,
+		// 		workLength: action.settings.workLength,
+		// 		shortBreakLength: action.settings.shortBreakLength,
+		// 		longBreakLength: action.settings.longBreakLength
+		// 	})
+		// );
 		default:
 			return state;
 	}
