@@ -22,6 +22,10 @@ export function loadTodosSuccess(todos) {
 	return { type: types.LOAD_TODOS_SUCCESS, todos };
 }
 
+export function setReorderedTodos(ctxId, todos) {
+	return { type: types.SET_TODOS_SUCCESS, ctxId: ctxId, todos: todos };
+}
+
 export function loadTodos(token, userId) {
 	return function (dispatch) {
 		dispatch(beginApiCall());
@@ -75,5 +79,14 @@ export function deleteTodo(todoItemId, token) {
 				dispatch(apiCallError(err));
 				throw err;
 			});
+	};
+}
+
+/**
+ * Used to update the order of the TODOs
+ */
+export function setTodos(ctxId, todos) {
+	return function (dispatch) {
+		dispatch(setReorderedTodos(ctxId, todos));
 	};
 }

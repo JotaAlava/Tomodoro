@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { useAuth0 } from '@auth0/auth0-react';
 import { toast } from 'react-toastify';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import * as todoActions from '../../redux/actions/todoActions';
 import TextInput from '../shared/TextInput';
@@ -12,6 +13,16 @@ import Loading from '../shared/Loading';
 import * as contextActions from '../../redux/actions/contextActions';
 
 const Todo = (props) => {
+	const [state, setState] = useState({
+		items: []
+	});
+
+	useEffect(async () => {
+		setState({
+			items: getItems(10)
+		});
+	}, []);
+
 	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
 	const [todo, setTodo] = useState({ value: '' });
 	const [errors, setErrors] = useState({});
@@ -118,13 +129,64 @@ const Todo = (props) => {
 		props.context.selectContext(ctxToSelect);
 	};
 
+	// a little function to help us with reordering the result
+	const reorder = (list, startIndex, endIndex) => {
+		const result = Array.from(list);
+		const [removed] = result.splice(startIndex, 1);
+		result.splice(endIndex, 0, removed);
+
+		return result;
+	};
+
+	const onDragEnd = (result) => {
+		// dropped outside the list
+		if (!result.destination) {
+			return;
+		}
+
+		const reOrderedTodos = reorder(
+			props.todos[props.selectedContext.tomatoContextId],
+			result.source.index,
+			result.destination.index
+		);
+
+		props.todoActions.setTodos(
+			props.selectedContext.tomatoContextId,
+			reOrderedTodos
+		);
+	};
+
+	const getItemStyle = (isDragging, draggableStyle) => ({
+		// some basic styles to make the items look a bit nicer
+		userSelect: 'none',
+		margin: `5px 0 5px 0`,
+		border: '1px solid #ccc',
+
+		// change background colour if dragging
+		background: isDragging ? '#009574' : 'transparent',
+
+		// styles we need to apply on draggables
+		...draggableStyle
+	});
+
+	const getListStyle = (isDraggingOver) => ({
+		background: isDraggingOver ? '#00cea8' : 'transparent'
+	});
+
+	const getItems = (count) =>
+		Array.from({ length: count }, (v, k) => k).map((k) => ({
+			id: `item-${k}`,
+			content: `item ${k}`
+		}));
+
+	const safeTodosByCtx = (listOfTodos) => {
+		return listOfTodos ? listOfTodos : [];
+	};
+
 	return (
 		<div className="relleno">
-			<div id="Dropzone">Dropzone</div>
-			<a draggable="true" href="#" id="Dragme">
-				Drag Me
-			</a>
 			<Title text={'Todo'}></Title>
+
 			<ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
 				{props.contexts ? (
 					props.contexts.map((ctx) => {
@@ -196,72 +258,77 @@ const Todo = (props) => {
 								{saving ? (
 									<></>
 								) : (
-									<div className="list-group margin-top">
-										{props.todos
-											.filter((todo) => {
-												return (
-													props.selectedContext !== null &&
-													props.selectedContext.tomatoContextId ===
-														todo.tomatoContextId
-												);
-											})
-											.sort((a, b) => {
-												const aFirst = -1;
-												const bFirst = 1;
-												const noChange = 0;
-
-												if (a.completed === b.completed) {
-													return noChange;
-												} else if (a.completed && !b.completed) {
-													return bFirst;
-												} else if (!a.completed && b.completed) {
-													return aFirst;
-												} else if (!a.completed && !b.completed) {
-													return noChange;
-												} else {
-													console.log('Something has gone terribly wrong!');
-												}
-											})
-											.map((todo, id) => {
-												return (
-													<label
-														key={'todo-row' + id}
-														className="list-group-item align-items-center todo"
-													>
-														{todo.completed ? (
-															<span
-																className="form-check-input me-1 todo-checkbox todo-checked"
-																onClick={(e) => {
-																	setCompleted(e, todo);
-																}}
-															></span>
-														) : (
-															<span
-																className="form-check-input me-1 todo-checkbox"
-																onClick={(e) => {
-																	setCompleted(e, todo);
-																}}
-															></span>
-														)}
-
-														<p className="todo-value">{todo.value}</p>
-
-														{todo.completed ? (
-															<span
-																onClick={(e) => {
-																	deleteTodo(e, todo);
-																}}
-																className="badge bg-warning rounded-pill pointer delete-todo"
+									<DragDropContext onDragEnd={onDragEnd}>
+										<Droppable droppableId="droppable">
+											{(provided, snapshot) => (
+												<div
+													{...provided.droppableProps}
+													ref={provided.innerRef}
+													style={getListStyle(snapshot.isDraggingOver)}
+													className="list-group margin-top"
+												>
+													{props.selectedContext ? (
+														safeTodosByCtx(
+															props.todos[props.selectedContext.tomatoContextId]
+														).map((todo, index) => (
+															<Draggable
+																key={'draggable-id-' + index}
+																draggableId={'draggable-id-' + index}
+																index={index}
 															>
-																X
-															</span>
-														) : (
-															<></>
-														)}
-													</label>
-												);
-											})}
-									</div>
+																{(provided, snapshot) => (
+																	<label
+																		ref={provided.innerRef}
+																		{...provided.draggableProps}
+																		{...provided.dragHandleProps}
+																		style={getItemStyle(
+																			snapshot.isDragging,
+																			provided.draggableProps.style
+																		)}
+																		className="list-group-item align-items-center todo"
+																	>
+																		{todo.completed ? (
+																			<span
+																				className="form-check-input me-1 todo-checkbox todo-checked"
+																				onClick={(e) => {
+																					setCompleted(e, todo);
+																				}}
+																			></span>
+																		) : (
+																			<span
+																				className="form-check-input me-1 todo-checkbox"
+																				onClick={(e) => {
+																					setCompleted(e, todo);
+																				}}
+																			></span>
+																		)}
+
+																		<p className="todo-value">{todo.value}</p>
+
+																		{todo.completed ? (
+																			<span
+																				onClick={(e) => {
+																					deleteTodo(e, todo);
+																				}}
+																				className="badge bg-warning rounded-pill pointer delete-todo"
+																			>
+																				X
+																			</span>
+																		) : (
+																			<></>
+																		)}
+																	</label>
+																)}
+															</Draggable>
+														))
+													) : (
+														<></>
+													)}
+													{provided.placeholder}
+												</div>
+											)}
+										</Droppable>
+									</DragDropContext>
 								)}
 							</div>
 						);
@@ -277,7 +344,7 @@ const Todo = (props) => {
 Todo.propTypes = {
 	context: PropTypes.object.isRequired,
 	contexts: PropTypes.array,
-	todos: PropTypes.array,
+	todos: PropTypes.object,
 	selectedContext: PropTypes.object,
 	todoActions: PropTypes.object
 };
