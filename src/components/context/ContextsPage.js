@@ -69,17 +69,11 @@ const ContextsPage = (props) => {
 			<section className="holy-grail-content">
 				<Loading></Loading>
 			</section>
-			// <div className="other-page">
-			// 	<Loading></Loading>
-			// </div>
 		);
 	}
 	if (isAuthenticated) {
 		if (props.contexts.length === 0) {
 			return loading ? (
-				// <div className="other-page">
-				// 	<Loading></Loading>
-				// </div>
 				<section className="holy-grail-content">
 					<Loading></Loading>
 				</section>
@@ -93,9 +87,6 @@ const ContextsPage = (props) => {
 						<h3>No contexts</h3>
 					</div>
 				</section>
-				// <main role="main" className="inner cover other-page">
-
-				// </main>
 			);
 		} else {
 			return loading ? (
@@ -103,9 +94,6 @@ const ContextsPage = (props) => {
 					<Loading></Loading>
 				</section>
 			) : (
-				// <div className="other-page">
-				// 	<Loading></Loading>
-				// </div>
 				<section className="holy-grail-content">
 					<h1 className="cover-heading">Work Contexts</h1>
 					<div className="lead">
@@ -115,9 +103,6 @@ const ContextsPage = (props) => {
 						<ContextsList contexts={props.contexts}></ContextsList>
 					</div>
 				</section>
-				// <main role="main" className="inner cover other-page">
-
-				// </main>
 			);
 		}
 	} else {
@@ -126,9 +111,6 @@ const ContextsPage = (props) => {
 				<h2>Work Contexts</h2>
 				<SignInMessage></SignInMessage>
 			</section>
-			// <div className="other-page">
-
-			// </div>
 		);
 	}
 };

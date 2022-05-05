@@ -26,9 +26,9 @@ const TomatoesTable = (props) => {
 
 	useEffect(async () => {
 		if (isAuthenticated) {
+			loadContexts();
 			loadSettings();
 			loadTomatoes();
-			loadContexts();
 		}
 	}, [isAuthenticated]);
 

@@ -1,5 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Auth0Provider } from '@auth0/auth0-react';
+import { ToastContainer } from 'react-toastify';
+import { connect } from 'react-redux';
+
 import AboutPage from './about/AboutPage';
 import Header from './shared/Header';
 import Footer from './shared/Footer';
@@ -8,8 +13,7 @@ import Tomatoes from './tomato/TomatoesPage';
 import Contexts from './context/ContextsPage';
 import ContextsEdit from './context/ContextsEdit';
 import AccountPage from './account/AccountPage';
-import { Auth0Provider } from '@auth0/auth0-react';
-import { ToastContainer } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-quill/dist/quill.snow.css';
 
@@ -19,9 +23,9 @@ const auth0 = {
 	audience: 'https://mostexpensivedeveloper-dev.us.auth0.com/api/v2/'
 };
 
-function App() {
+function App(props) {
 	return (
-		<div className="holy-grail">
+		<div className={props.loading ? 'holy-grail loading-cursor' : 'holy-grail'}>
 			<Auth0Provider
 				domain={auth0.domain}
 				clientId={auth0.clientId}
@@ -49,4 +53,21 @@ function App() {
 	);
 }
 
-export default App;
+App.propTypes = {
+	loading: PropTypes.object.isRequired
+};
+
+// This determines what part of the State we expose to the component
+function mapStateToProps(state) {
+	return {
+		loading: state.apiCallsInProgress > 0
+	};
+}
+
+// Map the call to dispatch into the props for cleaner dispatch
+function mapDispatchToProps() {
+	return {
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

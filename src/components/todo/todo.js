@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import * as todoActions from '../../redux/actions/todoActions';
 import { useAuth0 } from '@auth0/auth0-react';
+import { toast } from 'react-toastify';
+
+import * as todoActions from '../../redux/actions/todoActions';
 import TextInput from '../shared/TextInput';
 import Title from '../shared/Title';
 import Loading from '../shared/Loading';
-import { toast } from 'react-toastify';
 import * as contextActions from '../../redux/actions/contextActions';
 
 const Todo = (props) => {
@@ -119,6 +120,10 @@ const Todo = (props) => {
 
 	return (
 		<div className="relleno">
+			<div id="Dropzone">Dropzone</div>
+			<a draggable="true" href="#" id="Dragme">
+				Drag Me
+			</a>
 			<Title text={'Todo'}></Title>
 			<ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
 				{props.contexts ? (
@@ -164,7 +169,7 @@ const Todo = (props) => {
 							<Loading></Loading>
 						) : (
 							<TextInput
-								id={'todo-input'}
+								id={'todo-input-' + todo.tomatoContextId}
 								name="value"
 								label={'TODOs'}
 								value={todo.value}
@@ -199,6 +204,23 @@ const Todo = (props) => {
 													props.selectedContext.tomatoContextId ===
 														todo.tomatoContextId
 												);
+											})
+											.sort((a, b) => {
+												const aFirst = -1;
+												const bFirst = 1;
+												const noChange = 0;
+
+												if (a.completed === b.completed) {
+													return noChange;
+												} else if (a.completed && !b.completed) {
+													return bFirst;
+												} else if (!a.completed && b.completed) {
+													return aFirst;
+												} else if (!a.completed && !b.completed) {
+													return noChange;
+												} else {
+													console.log('Something has gone terribly wrong!');
+												}
 											})
 											.map((todo, id) => {
 												return (
