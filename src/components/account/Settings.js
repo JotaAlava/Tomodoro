@@ -9,9 +9,10 @@ import SettingsForm from '../account/SettingsForm';
 import Loading from '../shared/Loading';
 import Title from '../shared/Title';
 import * as settingsActions from '../../redux/actions/settingsActions';
+import { onSessionEnd } from '../../services/utility';
 
 const Settings = (props) => {
-	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 	const [settings, setSettings] = useState({ ...props.settings });
 	const [saving, setSaving] = useState(false);
 	const [error, setErrors] = useState(undefined);
@@ -33,6 +34,7 @@ const Settings = (props) => {
 				.catch((error) => {
 					setSaving(false);
 					setErrors({ onSave: error.message });
+					onSessionEnd(error, logout);
 				});
 		} else {
 			toast.info('Updating settings!');
@@ -45,6 +47,7 @@ const Settings = (props) => {
 				.catch((error) => {
 					setSaving(false);
 					setErrors({ onSave: error.message });
+					onSessionEnd(error, logout);
 				});
 		}
 	};
@@ -70,8 +73,8 @@ const Settings = (props) => {
 						setIsNewSettings(true);
 					}
 				})
-				.catch((e) => {
-					console.log(e);
+				.catch((err) => {
+					onSessionEnd(err, logout);
 				});
 		}
 	};

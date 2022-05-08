@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import ReactQuill from 'react-quill';
 import { useAuth0 } from '@auth0/auth0-react';
-import * as dailyNoteActions from '../../redux/actions/dailyNoteActions';
-import { getDailyNote } from '../../services/dailyNoteService';
-import Title from '../shared/Title';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
+import * as dailyNoteActions from '../../redux/actions/dailyNoteActions';
+import Title from '../shared/Title';
+import { onSessionEnd } from '../../services/utility';
+
 const DailyNotes = (props) => {
-	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 	const [value, setValue] = useState(undefined);
 	const [saving, setSaving] = useState(false);
 	const [dailyNote, setDailyNote] = useState(undefined);
@@ -17,15 +18,14 @@ const DailyNotes = (props) => {
 	useEffect(async () => {
 		if (isAuthenticated && user && user.sub) {
 			const token = await getAccessTokenSilently();
-			props.actions.loadNotes(token, user.sub).then((loadedNotes) => {
-				setValue(loadedNotes.current);
-			});
-			// const dailyNoteItem = await getDailyNote(token, user.sub);
-
-			// setPreviousNotes(pluckEarlierDates(dailyNoteItem, todayAsKey));
-
-			// setDailyNote(existingNote);
-			// setValue(existingNote);
+			props.actions
+				.loadNotes(token, user.sub)
+				.then((loadedNotes) => {
+					setValue(loadedNotes.current);
+				})
+				.catch((error) => {
+					onSessionEnd(error, logout);
+				});
 		}
 	}, [isAuthenticated, dailyNote]);
 
@@ -37,13 +37,14 @@ const DailyNotes = (props) => {
 
 		const token = await getAccessTokenSilently();
 
-		await props.actions.saveNotes(value, token, user.sub);
+		await props.actions.saveNotes(value, token, user.sub).catch((error) => {
+			onSessionEnd(error, logout);
+		});
 
 		// If there is a note for today, then it is not new. Update the content of the note
 		// All done!
 	};
 
-	const noToolbar = { toolbar: false, theme: 'snow' };
 	function createMarkup(html) {
 		return { __html: html };
 	}
@@ -103,29 +104,6 @@ const DailyNotes = (props) => {
 					</div>
 				)}
 			</>
-
-			// <main role="main" className="inner cover">
-
-			// {props.notes.recent && props.notes.recent.length > 0 ? (
-			// 	<div className="previous-notes margin-top">
-			// {props.notes.recent.map((note, index) => {
-			// 	return (
-			// 		<div key={note.date} className="margin-top">
-			// 			<h2>{note.date}</h2>
-			// 			<hr></hr>
-			// 			<RenderHtmlDangerously
-			// 				html={note.note}
-			// 			></RenderHtmlDangerously>
-			// 		</div>
-			// 	);
-			// })}
-			// 	</div>
-			// ) : (
-			// 	<div className="previous-notes margin-top empty-previous-notes">
-			// 		<span className="empty-notes">No previous notes.</span>
-			// 	</div>
-			// )}
-			// </main>
 		);
 	} else {
 		return (

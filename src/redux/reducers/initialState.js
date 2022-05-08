@@ -18,5 +18,5 @@ export default {
 		current: undefined,
 		recent: []
 	},
-	todos: []
+	todos: {}
 };

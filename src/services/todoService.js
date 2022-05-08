@@ -11,7 +11,7 @@ export async function load(token, userId) {
 	try {
 		return dataSource(CONSTANTS.DATASOURCES.GET_TODOS, token, body).then(
 			(res) => {
-				return Array.isArray(res) ? res : [];
+				return Array.isArray(res) ? res : {};
 			}
 		);
 	} catch (e) {

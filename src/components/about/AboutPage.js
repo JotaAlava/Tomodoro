@@ -13,6 +13,14 @@ const AboutPage = () => {
 				break of 15 minutes.
 			</p>
 
+			<h5>10x Stand-up Report</h5>
+			<p>
+				One key way this helps me as a software developer is by composing my
+				daily stand-up report pomodoro by pomodoro throughout the day. This
+				keeps my stand-up report relevant, accurate and useful for the rest of
+				my team.
+			</p>
+			<hr></hr>
 			<h1>The Sophrosyn3 LLC Twist</h1>
 			<h5>Track work by work context.</h5>
 			<p>
@@ -22,20 +30,14 @@ const AboutPage = () => {
 				thinking every time you log an entry of work, alongside anything of
 				significant note.
 			</p>
-			<hr></hr>
 			<h5>Formatted braindumps as Daily Notes.</h5>
 			<p>
-				This feature is more effective when used as a priority list, braindump
-				and checklist. One key way this helps me as a software developer is by
-				composing my daily stand-up report pomodoro by pomodoro throughout the
-				day. This keeps my stand-up report relevant, accurate and useful for the
-				rest of my team.
+				This feature is more effective when used as a braindump or meeting
+				notes.
 			</p>
+			<h5>Contextual TODOs</h5>
 			<p>
-				A great nice to have is that when it comes time to ask for a salary
-				raise, you can very easliy look back at these notes/log and compose a
-				point-by-point essay demonstrating all the work that you have done for
-				your employer.
+				Keep track of each discovery or accomplishment as you complete tomatoes.
 			</p>
 		</section>
 	);

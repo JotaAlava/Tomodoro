@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import SignInMessage from '../shared/SignInMessage';
 import Loading from '../shared/Loading';
+import { onSessionEnd } from '../../services/utility';
 
 const emptyTomato = {
 	created: null,
@@ -20,7 +21,7 @@ const TomatoCreate = ({ selectedContext, actions }) => {
 	const [tomato, setTomato] = useState(emptyTomato);
 	const [errors, setErrors] = useState({});
 	const [saving, setSaving] = useState(false);
-	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 
 	useEffect(async () => {}, [selectedContext, isAuthenticated, saving, errors]);
 
@@ -63,6 +64,7 @@ const TomatoCreate = ({ selectedContext, actions }) => {
 			.catch((error) => {
 				setSaving(false);
 				setErrors({ onSave: error.result.message });
+				onSessionEnd(error, logout);
 			});
 	}
 

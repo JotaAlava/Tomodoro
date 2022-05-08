@@ -11,6 +11,7 @@ import TextInput from '../shared/TextInput';
 import Title from '../shared/Title';
 import Loading from '../shared/Loading';
 import * as contextActions from '../../redux/actions/contextActions';
+import { onSessionEnd } from '../../services/utility';
 
 const Todo = (props) => {
 	const [state, setState] = useState({
@@ -23,7 +24,7 @@ const Todo = (props) => {
 		});
 	}, []);
 
-	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 	const [todo, setTodo] = useState({ value: '' });
 	const [errors, setErrors] = useState({});
 	const [saving, setSaving] = useState(false);
@@ -35,6 +36,8 @@ const Todo = (props) => {
 
 		props.todoActions.loadTodos(token, user.sub).then(() => {
 			setSaving(false);
+		}).catch((err) => {
+			onSessionEnd(err, logout);
 		});
 	};
 
@@ -89,6 +92,7 @@ const Todo = (props) => {
 				.catch((error) => {
 					setSaving(false);
 					setErrors({ onSave: error.result.message });
+					onSessionEnd(error, logout);
 				});
 		} else {
 			toast.warning('Cannot log a todo without a work context.');
@@ -108,7 +112,9 @@ const Todo = (props) => {
 				toast.success('Good job. Todo complete!');
 				loadTodos();
 			})
-			.catch(() => {});
+			.catch((err) => {
+				onSessionEnd(err, logout);
+			});
 	};
 
 	const deleteTodo = async (e, todo) => {
@@ -122,7 +128,9 @@ const Todo = (props) => {
 				toast.success('Todo removed!');
 				loadTodos();
 			})
-			.catch(() => {});
+			.catch((err) => {
+				onSessionEnd(err, logout);
+			});
 	};
 
 	const selectContext = (ctxToSelect) => {

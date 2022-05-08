@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// Prop types helps us specify that props that our component accepts
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { toast } from 'react-toastify';
@@ -9,7 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import * as contextActions from '../../redux/actions/contextActions';
 import ContextForm from './ContextForm';
 import Loading from '../shared/Loading';
-
+import { onSessionEnd } from '../../services/utility';
 
 const emptyCtx = {
 	created: null,
@@ -24,7 +23,7 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
 	const [context, setContext] = useState({ ...props.context });
 	const [errors, setErrors] = useState({});
 	const [saving, setSaving] = useState(false);
-	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 
 	useEffect(async () => {
 		setContext({ ...props.context });
@@ -55,6 +54,7 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
 			.catch((error) => {
 				setSaving(false);
 				setErrors({ onSave: error.message });
+				onSessionEnd(error, logout);
 			});
 	}
 

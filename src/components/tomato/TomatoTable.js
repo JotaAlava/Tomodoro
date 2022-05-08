@@ -16,13 +16,14 @@ import Loading from '../shared/Loading';
 import TomatoTimer from '../tomato-timer/tomatoTimer';
 import Title from '../shared/Title';
 import * as settingsActions from '../../redux/actions/settingsActions';
+import { onSessionEnd } from '../../services/utility';
 
 const TomatoesTable = (props) => {
 	const [errors, setErrors] = useState({});
 	const [loadingTomatoes, setLoadingTomatoes] = useState(true);
 	const [loadingContexts, setLoadingContexts] = useState(true);
 	const [saving, setSaving] = useState(false);
-	const { isAuthenticated, getAccessTokenSilently, user } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 
 	useEffect(async () => {
 		if (isAuthenticated) {
@@ -59,14 +60,20 @@ const TomatoesTable = (props) => {
 			.catch((error) => {
 				setSaving(false);
 				setErrors({ onSave: error.result.message });
+				onSessionEnd(error, logout);
 			});
 	};
 
 	const loadSettings = async () => {
 		const token = await getAccessTokenSilently();
-		props.settings.loadSettings(token, user.sub).then(() => {
-			toast.info('Settings loaded');
-		});
+		props.settings
+			.loadSettings(token, user.sub)
+			.then(() => {
+				toast.info('Settings loaded');
+			})
+			.catch((err) => {
+				onSessionEnd(err, logout);
+			});
 	};
 
 	const loadContexts = async () => {
@@ -91,6 +98,7 @@ const TomatoesTable = (props) => {
 			})
 			.catch((err) => {
 				setErrors({ ...errors, contexts: err });
+				onSessionEnd(err, logout);
 			});
 	};
 
@@ -104,6 +112,7 @@ const TomatoesTable = (props) => {
 			})
 			.catch((err) => {
 				setErrors({ ...errors, tomatoes: err });
+				onSessionEnd(err, logout);
 			});
 	};
 
@@ -116,10 +125,15 @@ const TomatoesTable = (props) => {
 
 			const token = await getAccessTokenSilently();
 			toast.info('Re-assigning...');
-			props.tomato.updateTomato(deepCopy, token).then(() => {
-				toast.success('Re-assigned!');
-				loadTomatoes();
-			});
+			props.tomato
+				.updateTomato(deepCopy, token)
+				.then(() => {
+					toast.success('Re-assigned!');
+					loadTomatoes();
+				})
+				.catch((err) => {
+					onSessionEnd(err, logout);
+				});
 		}
 	};
 
@@ -127,8 +141,6 @@ const TomatoesTable = (props) => {
 	const fontSize = fontSize;
 	const descStyle = { ...fontSize };
 	const dateStyle = { fontSize: 'small' };
-	const sectionStyle = { minWidth: '60%' };
-	const noteSectionStyle = { minWidth: '40%' };
 
 	return (
 		<>
