@@ -15,7 +15,7 @@ const Header = () => {
 
 	return (
 		<header className="contenedor fila spread-between">
-			<h3 onClick={goHome}>Tomato Timer</h3>
+			<h3 onClick={goHome}>ElPomodoro</h3>
 			<div className="nav nav-masthead contenedor fila">
 				<NavLink
 					to="/tomatoes"
