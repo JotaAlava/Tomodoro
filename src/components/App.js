@@ -54,7 +54,7 @@ function App(props) {
 }
 
 App.propTypes = {
-	loading: PropTypes.object.isRequired
+	loading: PropTypes.bool.isRequired
 };
 
 // This determines what part of the State we expose to the component
@@ -66,8 +66,7 @@ function mapStateToProps(state) {
 
 // Map the call to dispatch into the props for cleaner dispatch
 function mapDispatchToProps() {
-	return {
-	};
+	return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

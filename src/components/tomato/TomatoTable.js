@@ -20,8 +20,8 @@ import { onSessionEnd } from '../../services/utility';
 
 const TomatoesTable = (props) => {
 	const [errors, setErrors] = useState({});
-	const [loadingTomatoes, setLoadingTomatoes] = useState(true);
-	const [loadingContexts, setLoadingContexts] = useState(true);
+	const [loadingTomatoes, setLoadingTomatoes] = useState(false);
+	const [loadingContexts, setLoadingContexts] = useState(false);
 	const [saving, setSaving] = useState(false);
 	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 
@@ -79,41 +79,47 @@ const TomatoesTable = (props) => {
 	const loadContexts = async () => {
 		const token = await getAccessTokenSilently();
 
-		props.context
-			.loadContexts(token, user.sub)
-			.then((contexts) => {
-				setLoadingContexts(false);
+		if (!loadingContexts) {
+			setLoadingContexts(true);
+			props.context
+				.loadContexts(token, user.sub)
+				.then((contexts) => {
+					setLoadingContexts(false);
 
-				// Select first work context that is set to default
-				let ctxToSelect = undefined;
-				contexts.forEach((ctx) => {
-					if (ctx.default) {
-						ctxToSelect = ctx;
+					// Select first work context that is set to default
+					let ctxToSelect = undefined;
+					contexts.forEach((ctx) => {
+						if (ctx.default) {
+							ctxToSelect = ctx;
+						}
+					});
+
+					if (ctxToSelect) {
+						props.context.selectContext(ctxToSelect);
 					}
+				})
+				.catch((err) => {
+					setErrors({ ...errors, contexts: err });
+					onSessionEnd(err, logout);
 				});
-
-				if (ctxToSelect) {
-					props.context.selectContext(ctxToSelect);
-				}
-			})
-			.catch((err) => {
-				setErrors({ ...errors, contexts: err });
-				onSessionEnd(err, logout);
-			});
+		}
 	};
 
 	const loadTomatoes = async () => {
 		const token = await getAccessTokenSilently();
 
-		props.tomato
-			.loadTomatoes(token, user.sub)
-			.then(() => {
-				setLoadingTomatoes(false);
-			})
-			.catch((err) => {
-				setErrors({ ...errors, tomatoes: err });
-				onSessionEnd(err, logout);
-			});
+		if (!loadingTomatoes) {
+			setLoadingTomatoes(true);
+			props.tomato
+				.loadTomatoes(token, user.sub)
+				.then(() => {
+					setLoadingTomatoes(false);
+				})
+				.catch((err) => {
+					setErrors({ ...errors, tomatoes: err });
+					onSessionEnd(err, logout);
+				});
+		}
 	};
 
 	const assign = async (tomato) => {
