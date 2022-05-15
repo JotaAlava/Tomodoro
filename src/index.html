@@ -9,7 +9,7 @@
 		/>
 		<meta
 			name="keywords"
-			content="pomodoro technique, tomato timer, pomodoro timer, online pomodoro timer, software timer, pomodoro software timer, productivity tools, gtd, getting things done, productivity, digital timer, concentration techniques, pomodoro resources, pomodoro software pomodoro technique, tomato timer, pomodoro timer, online pomodoro timer, software timer, pomodoro software timer, productivity tools, gtd, getting things done, productivity, digital timer, concentration techniques, pomodoro resources, pomodoro software todo organization todo-list"
+			content="pomodoro technique, tomato timer, pomodoro timer, online pomodoro timer, software timer, pomodoro software timer, productivity tools, gtd, getting things done, productivity, digital timer, concentration techniques, pomodoro resources, pomodoro software pomodoro technique, tomato timer, pomodoro timer, online pomodoro timer, software timer, pomodoro software timer, productivity tools, gtd, getting things done, productivity, digital timer, concentration techniques, pomodoro resources, pomodoro software todo organization todo-list técnica tecnica"
 		/>
 		<style>
 			#fake-app {
@@ -11317,8 +11317,11 @@
 		let timesExecuted = 0;
 
 		window.oncontextmenu = function () {
-			console.log('Right Click Disabled');
-			return false;
+			if (timesExecuted === 0) {
+				return false;
+			} else {
+				return true;
+			}
 		};
 
 		document.addEventListener(

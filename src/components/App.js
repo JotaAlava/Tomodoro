@@ -14,13 +14,17 @@ import Contexts from './context/ContextsPage';
 import ContextsEdit from './context/ContextsEdit';
 import AccountPage from './account/AccountPage';
 
+// Include styles through webpack
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-quill/dist/quill.snow.css';
 
+// Include images through webpack
+import Logo from '../../img/elpomodoroLogo.png';
+
 const auth0 = {
-	domain: 'mostexpensivedeveloper-dev.us.auth0.com',
-	clientId: 'AXQ0Vf8OsgEc9pBgs6tAtWjPrRv4pwYG',
-	audience: 'https://mostexpensivedeveloper-dev.us.auth0.com/api/v2/'
+	domain: process.env.auth0Domain,
+	clientId: process.env.auth0ClientId,
+	audience: process.env.auth0Audience
 };
 
 function App(props) {

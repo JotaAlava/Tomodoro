@@ -2,10 +2,10 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	target: 'web',
 	devtool: 'cheap-module-source-map',
 	entry: './src/index',
@@ -25,19 +25,17 @@ module.exports = {
 	plugins: [
 		new webpack.DefinePlugin({
 			'process.env.API_URL': JSON.stringify(
-				'https://b0yojzr0z1.execute-api.us-east-1.amazonaws.com/dev/'
+				'https://25116dqkhk.execute-api.us-east-1.amazonaws.com/prod/'
 			),
 			'process.env.PRODUCT_ID': JSON.stringify(
-				'5F27FC90-1F7A-11EC-B294-AB5D2B155148' // Most Expensive Developer ProductId
+				'5F27FC90-1F7A-11EC-B294-AB5D2B155148' // ElPomodoro ProductId
 			),
-			'process.env.auth0Domain': JSON.stringify(
-				'mostexpensivedeveloper-dev.us.auth0.com'
-			),
+			'process.env.auth0Domain': JSON.stringify('elpomodoro.us.auth0.com'),
 			'process.env.auth0ClientId': JSON.stringify(
-				'AXQ0Vf8OsgEc9pBgs6tAtWjPrRv4pwYG'
+				'kXY9WcPze0gbSCtJpSAsw5HBAViTtY9C'
 			),
 			'process.env.auth0Audience': JSON.stringify(
-				'https://mostexpensivedeveloper-dev.us.auth0.com/api/v2/'
+				'https://elpomodoro.us.auth0.com/api/v2/'
 			)
 		}),
 		new HtmlWebpackPlugin({
