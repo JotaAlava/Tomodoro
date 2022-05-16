@@ -3,7 +3,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import LoginButton from './LoginButton';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Header = () => {
+const Header = (props) => {
 	const activeClass = 'nav-link active';
 	const inActiveClass = 'nav-link';
 	const { isAuthenticated } = useAuth0();
@@ -15,7 +15,9 @@ const Header = () => {
 
 	return (
 		<header className="contenedor fila spread-between">
-			<h3 onClick={goHome}>ElPomodoro</h3>
+			<h3 onClick={goHome} style={{ cursor: 'pointer' }}>
+				ElPomodoro
+			</h3>
 			<div className="nav nav-masthead contenedor fila">
 				<NavLink
 					to="/tomatoes"

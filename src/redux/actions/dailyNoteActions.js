@@ -15,10 +15,10 @@ export function updateNoteSuccess() {
 	return { type: types.UPDATE_NOTES_SUCCESS };
 }
 
-export function loadNotes(token, userId) {
+export function loadNotes(token, tomatoContextId) {
 	return function (dispatch) {
 		dispatch(beginApiCall());
-		return getDailyNote(token, userId)
+		return getDailyNote(token, tomatoContextId)
 			.then((notes) => {
 				dispatch(loadNotesSuccess(notes));
 				return notes;

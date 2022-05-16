@@ -30,15 +30,19 @@ const Todo = (props) => {
 	const [saving, setSaving] = useState(false);
 
 	const loadTodos = async () => {
-		setSaving(true);
+		if (!saving) {
+			setSaving(true);
+			const token = await getAccessTokenSilently();
 
-		const token = await getAccessTokenSilently();
-
-		props.todoActions.loadTodos(token, user.sub).then(() => {
-			setSaving(false);
-		}).catch((err) => {
-			onSessionEnd(err, logout);
-		});
+			props.todoActions
+				.loadTodos(token, user.sub)
+				.then(() => {
+					setSaving(false);
+				})
+				.catch((err) => {
+					onSessionEnd(err, logout);
+				});
+		}
 	};
 
 	useEffect(async () => {
@@ -46,16 +50,18 @@ const Todo = (props) => {
 			loadTodos();
 		}
 
-		if (props.selectedContext) {
-			const el = document.getElementById(
-				'pills-home-tab' + props.selectedContext.tomatoContextId
-			);
+		if (props.selectedContext || props.contexts.length === 1) {
+			const cxtId =
+				props.selectedContext === null
+					? props.contexts[0].tomatoContextId
+					: props.selectedContext.tomatoContextId;
+			const el = document.getElementById('pills-home-tab' + cxtId);
 
 			if (!el.classList.contains('active')) {
 				el.click();
 			}
 		}
-	}, [props.selectedContext]);
+	}, [props.selectedContext, props.contexts]);
 
 	function handleChange(event) {
 		const { name, value } = event.target;
@@ -193,10 +199,10 @@ const Todo = (props) => {
 
 	return (
 		<div className="relleno">
-			<Title text={'Todo'}></Title>
+			<Title text={'Selected Context'}></Title>
 
 			<ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
-				{props.contexts ? (
+				{props.contexts.length > 0 ? (
 					props.contexts.map((ctx) => {
 						return (
 							<li
@@ -227,8 +233,10 @@ const Todo = (props) => {
 				)}
 			</ul>
 
+			<Title text={'Todo'}></Title>
+
 			<div className="tab-content" id="pills-tabContent">
-				{props.selectedContext ? (
+				{props.contexts.length > 0 ? (
 					<form onSubmit={handleSave} className="margin-top-small">
 						{errors.onSave && (
 							<div className="alert alert-danger" role="alert">
@@ -238,19 +246,31 @@ const Todo = (props) => {
 						{saving ? (
 							<Loading></Loading>
 						) : (
-							<TextInput
-								id={'todo-input-' + todo.tomatoContextId}
-								name="value"
-								label={'TODOs'}
-								value={todo.value}
-								onChange={handleChange}
-								error={errors.label}
-								disabled={saving}
-							/>
+							<>
+								{props.selectedContext !== null ? (
+									<TextInput
+										id={'todo-input-' + todo.tomatoContextId}
+										name="value"
+										label={'TODOs'}
+										value={todo.value}
+										onChange={handleChange}
+										error={errors.label}
+										disabled={saving}
+									/>
+								) : (
+									<p>No contexts selected.</p>
+								)}
+							</>
 						)}
 					</form>
 				) : (
-					<p>Select a work context to add TODOs</p>
+					<>
+						{props.contexts.length > 0 ? (
+							<p>No contexts selected.</p>
+						) : (
+							<p>No contexts.</p>
+						)}
+					</>
 				)}
 
 				{props.contexts ? (

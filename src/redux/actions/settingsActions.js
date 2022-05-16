@@ -1,6 +1,7 @@
 import * as types from './actionTypes';
 import { load, save, update } from '../../services/settingsService';
 import { beginApiCall, apiCallError } from './apiStatusActions';
+import initialState from '../../redux/reducers/initialState';
 
 export function updateTodoSuccess(settings) {
 	return { type: types.UPDATE_TODO_SUCCESS, todo: settings };
@@ -23,8 +24,24 @@ export function loadSettings(token, userId) {
 		dispatch(beginApiCall());
 		return load(token, userId)
 			.then((settings) => {
-				dispatch(loadSettingsSuccess(settings));
+				let settingsToUse = {};
+				// If no settings, then use defaults
+				if (
+					settings &&
+					settings.workLength &&
+					settings.shortBreakLength &&
+					settings.longBreakLength
+				) {
+					settingsToUse = settings;
+				} else {
+					settingsToUse = {
+						workLength: initialState.tomatoTimer.workLength,
+						shortBreakLength: initialState.tomatoTimer.shortBreakLength,
+						longBreakLength: initialState.tomatoTimer.longBreakLength
+					};
+				}
 
+				dispatch(loadSettingsSuccess(settingsToUse));
 				// Is this an anti-pattern for redux?
 				return settings;
 			})

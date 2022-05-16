@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 
 import * as tomatoActions from '../../redux/actions/tomatoActions';
 import * as contextActions from '../../redux/actions/contextActions';
-import TomatoModal from '../tomato/TomatoModal';
 import ReloadOnError from '../shared/ReloadOnError';
 import TomatoCreate from './TomatoCreate';
 import RemovableRow from '../shared/RemovableRow';
@@ -220,12 +219,7 @@ const TomatoesTable = (props) => {
 																			key={tomato.tomatoContextId}
 																			style={fontSize}
 																		>
-																			{' '}
-																			<TomatoModal
-																				label={toContextLabel(
-																					tomato.tomatoContextId
-																				)}
-																			></TomatoModal>
+																			{toContextLabel(tomato.tomatoContextId)}
 																		</div>
 																	</td>
 																	<RemovableRow
@@ -259,16 +253,11 @@ const TomatoesTable = (props) => {
 												)
 											) : (
 												<tr>
-													<td key={0}>No tomatoes.</td>
+													<td key={0}></td>
 													<td key={1}>
-														<div style={fontSize}>
-															{' '}
-															<TomatoModal
-																label={toContextLabel(0)}
-																tomato={undefined}
-															></TomatoModal>
-														</div>
+														<div style={fontSize}>No tomatoes.</div>
 													</td>
+													<td key={2}></td>
 												</tr>
 											)}
 										</tbody>

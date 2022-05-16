@@ -52,7 +52,6 @@ export async function getTomatoes(token, userId) {
 		.then(sort)
 		.then(groupByDay)
 		.catch(async (e) => {
-			console.log(e);
 			throw new Error(e);
 		});
 }

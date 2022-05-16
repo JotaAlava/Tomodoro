@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { ToastContainer } from 'react-toastify';
@@ -17,9 +17,6 @@ import AccountPage from './account/AccountPage';
 // Include styles through webpack
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-quill/dist/quill.snow.css';
-
-// Include images through webpack
-import Logo from '../../img/elpomodoroLogo.png';
 
 const auth0 = {
 	domain: process.env.auth0Domain,
@@ -43,7 +40,10 @@ function App(props) {
 					<Switch>
 						<Route path="/about" component={AboutPage}></Route>
 						<Route path="/tomatoes" component={Tomatoes}></Route>
-						<Route exact path="/" component={Tomatoes}></Route>
+						<Route exact path="/">
+							<Redirect to="/tomatoes"></Redirect>
+						</Route>
+
 						<Route path="/contexts/:id" component={ContextsEdit}></Route>
 						<Route path="/contexts" component={Contexts}></Route>
 						<Route path="/account" component={AccountPage}></Route>

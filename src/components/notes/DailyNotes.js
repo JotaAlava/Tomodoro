@@ -4,45 +4,63 @@ import ReactQuill from 'react-quill';
 import { useAuth0 } from '@auth0/auth0-react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 
 import * as dailyNoteActions from '../../redux/actions/dailyNoteActions';
 import Title from '../shared/Title';
 import { onSessionEnd } from '../../services/utility';
+import Loading from '../shared/Loading';
 
 const DailyNotes = (props) => {
 	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
 	const [value, setValue] = useState(undefined);
 	const [saving, setSaving] = useState(false);
 	const [dailyNote, setDailyNote] = useState(undefined);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(async () => {
-		if (isAuthenticated && user && user.sub) {
+		const cxtId =
+			props.selectedContext !== null && props.selectedContext.tomatoContextId;
+
+		if (cxtId && isAuthenticated && user && user.sub && !loading) {
+			setLoading(true);
+
 			const token = await getAccessTokenSilently();
+
 			props.actions
-				.loadNotes(token, user.sub)
+				.loadNotes(token, cxtId)
 				.then((loadedNotes) => {
 					setValue(loadedNotes.current);
+					setLoading(false);
 				})
 				.catch((error) => {
 					onSessionEnd(error, logout);
+					setLoading(false);
 				});
 		}
-	}, [isAuthenticated, dailyNote]);
+	}, [isAuthenticated, dailyNote, props.selectedContext]);
 
 	const onSave = async (event) => {
 		event.preventDefault();
 
-		console.log('Will save:');
-		console.log(value);
-
 		const token = await getAccessTokenSilently();
-
-		await props.actions.saveNotes(value, token, user.sub).catch((error) => {
-			onSessionEnd(error, logout);
-		});
-
-		// If there is a note for today, then it is not new. Update the content of the note
-		// All done!
+		const cxtId = props.selectedContext.tomatoContextId;
+		if (cxtId) {
+			await props.actions
+				.saveNotes(
+					{
+						value,
+						tomatoContextId: cxtId
+					},
+					token,
+					user.sub
+				)
+				.catch((error) => {
+					onSessionEnd(error, logout);
+				});
+		} else {
+			toast.error('No context selected!');
+		}
 	};
 
 	function createMarkup(html) {
@@ -59,49 +77,103 @@ const DailyNotes = (props) => {
 		return (
 			<>
 				<Title text={'Daily Notes'}></Title>
-				{props.notes.current === undefined || value === undefined ? (
-					<div className="note-box mega-margin-bottom">
-						<p className="previous-notes empty-notes loading-quill">
-							Loading daily note...
-						</p>
-					</div>
-				) : (
-					<div className="note-box">
-						<ReactQuill theme="snow" value={value} onChange={setValue} />
-						<form onSubmit={onSave}>
-							<button
-								type="submit"
-								disabled={saving}
-								className="btn btn-primary margin-top"
-							>
-								{saving ? 'Saving daily note...' : 'Save Note'}
-							</button>
-						</form>
-					</div>
-				)}
-				{props.notes.recent && props.notes.recent.length > 0 ? (
-					<div className="note-box note-box-borders note-scroll margin-top">
-						{props.notes.recent.map((note) => {
-							return (
-								<div
-									key={note.date}
-									className="margin-top justify-previous-note"
-								>
-									<h2 className="align-date">{note.date}</h2>
-									<hr></hr>
-									<RenderHtmlDangerously
-										html={note.note}
-									></RenderHtmlDangerously>
-								</div>
-							);
-						})}
-					</div>
+				{props.contexts.length > 0 ? (
+					<>
+						{props.notes.current === undefined || value === undefined ? (
+							<>
+								{props.selectedContext === null ? (
+									<div className="note-box mega-margin-bottom">
+										<p className="previous-notes empty-notes loading-quill">
+											No context selected.
+										</p>
+									</div>
+								) : (
+									<>
+										{loading ? (
+											<Loading></Loading>
+										) : (
+											<div className="note-box">
+												<ReactQuill
+													theme="snow"
+													value={value || ''}
+													onChange={setValue}
+												/>
+												<form onSubmit={onSave}>
+													<button
+														type="submit"
+														disabled={saving}
+														className="btn btn-primary margin-top"
+													>
+														{saving ? 'Saving daily note...' : 'Save Note'}
+													</button>
+												</form>
+											</div>
+										)}
+									</>
+								)}
+							</>
+						) : (
+							<>
+								{loading ? (
+									<Loading></Loading>
+								) : (
+									<div className="note-box">
+										<ReactQuill
+											theme="snow"
+											value={value || ''}
+											onChange={setValue}
+										/>
+										<form onSubmit={onSave}>
+											<button
+												type="submit"
+												disabled={saving}
+												className="btn btn-primary margin-top"
+											>
+												{saving ? 'Saving daily note...' : 'Save Note'}
+											</button>
+										</form>
+									</div>
+								)}
+							</>
+						)}
+					</>
 				) : (
 					<div className="note-box note-box-borders note-scroll margin-top">
 						<span className="empty-notes empty-previous-notes">
-							No previous notes.
+							No contexts.
 						</span>
 					</div>
+				)}
+
+				{props.contexts.length > 0 ? (
+					<>
+						{props.notes.recent && props.notes.recent.length > 0 ? (
+							<div className="note-box note-box-borders note-scroll margin-top">
+								{props.notes.recent.map((note) => {
+									return (
+										<div
+											key={note.date}
+											className="margin-top justify-previous-note"
+										>
+											<h2 className="align-date">{note.date}</h2>
+											<hr></hr>
+											<RenderHtmlDangerously
+												html={note.note}
+											></RenderHtmlDangerously>
+										</div>
+									);
+								})}
+							</div>
+						) : (
+							<div className="note-box note-box-borders note-scroll margin-top">
+								<span className="empty-notes empty-previous-notes margin-top">
+									No previous notes.
+								</span>
+							</div>
+						)}
+					</>
+				) : (
+					<p>No contexts.</p>
 				)}
 			</>
 		);
@@ -115,13 +187,16 @@ const DailyNotes = (props) => {
 };
 
 DailyNotes.propTypes = {
-	notes: PropTypes.object.isRequired
+	notes: PropTypes.object.isRequired,
+	contexts: PropTypes.array
 };
 
 // This determines what part of the State we expose to the component
 function mapStateToProps(state) {
 	return {
-		notes: state.notes
+		notes: state.notes,
+		selectedContext: state.selectedContext,
+		contexts: state.contexts
 	};
 }
 

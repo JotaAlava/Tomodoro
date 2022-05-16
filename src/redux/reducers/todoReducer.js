@@ -4,13 +4,16 @@ import initialState from './initialState';
 const transformToMap = (todos) => {
 	const result = {};
 
-	todos.forEach((todo) => {
-		if (result[todo.tomatoContextId]) {
-			result[todo.tomatoContextId].push(todo);
-		} else {
-			result[todo.tomatoContextId] = [];
-		}
-	});
+	// eslint-disable-next-line no-prototype-builtins
+	if (todos.hasOwnProperty('forEach')) {
+		todos.forEach((todo) => {
+			if (result[todo.tomatoContextId]) {
+				result[todo.tomatoContextId].push(todo);
+			} else {
+				result[todo.tomatoContextId] = [];
+			}
+		});
+	}
 
 	return result;
 };

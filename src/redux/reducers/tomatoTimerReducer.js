@@ -68,7 +68,6 @@ export default function tomatoTimerReducer(
 				})
 			);
 		case types.SAVE_SETTINGS_SUCCESS:
-			console.log(action);
 			return state;
 		// return JSON.parse(
 		// 	JSON.stringify({

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useAuth0 } from '@auth0/auth0-react';
 import { toast } from 'react-toastify';
 
+import initialState from '../../redux/reducers/initialState';
 import SettingsForm from '../account/SettingsForm';
 import Loading from '../shared/Loading';
 import Title from '../shared/Title';
@@ -21,7 +22,7 @@ const Settings = (props) => {
 	const saveSettings = async (event) => {
 		event.preventDefault();
 		setSaving(true);
-		
+
 		const token = await getAccessTokenSilently();
 		if (isNewSettings) {
 			toast.info('Creating settings!');
@@ -71,6 +72,11 @@ const Settings = (props) => {
 						setSettings(settings);
 					} else {
 						setIsNewSettings(true);
+						setSettings({
+							workLength: initialState.tomatoTimer.workLength,
+							shortBreakLength: initialState.tomatoTimer.shortBreakLength,
+							longBreakLength: initialState.tomatoTimer.longBreakLength
+						});
 					}
 				})
 				.catch((err) => {

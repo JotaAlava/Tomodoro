@@ -119,9 +119,6 @@ const returns = (url, options) => {
 };
 
 const api = async (url, options) => {
-	console.log(url);
-	console.log(options);
-
 	return Promise.resolve(returns(url, options));
 };
 

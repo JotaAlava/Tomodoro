@@ -8,10 +8,6 @@ const BooleanInput = (props) => {
 		wrapperClass += ' has-error';
 	}
 
-	function localChange(val) {
-		console.log(val);
-	}
-
 	return (
 		<div className={wrapperClass}>
 			<label htmlFor={props.id} style={fontSize}>

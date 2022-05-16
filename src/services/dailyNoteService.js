@@ -5,11 +5,12 @@ import {
 	updateByDataSchemaId,
 	dataSchemas
 } from '../services/omegaDataService';
+import initialState from '../redux/reducers/initialState';
 
-export async function getDailyNote(token, userId) {
+export async function getDailyNote(token, tomatoContextId) {
 	const body = {
 		productId: process.env.PRODUCT_ID,
-		userId: userId
+		tomatoContextId
 	};
 
 	const notes = dataSource(CONSTANTS.DATASOURCES.GET_DAILYNOTES, token, body);
@@ -23,7 +24,13 @@ export async function getDailyNote(token, userId) {
 					};
 					// eslint-disable-next-line no-mixed-spaces-and-tabs
 			  })
-			: [];
+			: initialState.notes;
+	};
+
+	const filterByTomatoContextId = (tomatoesWithJsonDate) => {
+		return tomatoesWithJsonDate.filter((note) => {
+			return note.tomatoContextId === tomatoContextId;
+		});
 	};
 
 	const sort = (tomatoesViewModel) => {
@@ -85,11 +92,11 @@ export async function getDailyNote(token, userId) {
 
 	return notes
 		.then(toViewModel)
+		.then(filterByTomatoContextId)
 		.then(sort)
 		.then(groupByDay)
 		.then(buildFinalResult)
 		.catch(async (e) => {
-			console.log(e);
 			throw new Error(e);
 		});
 }
@@ -104,7 +111,8 @@ export function save(note, token, userId) {
 			{
 				dailyNote: {
 					date: new Date(),
-					note: note
+					note: note.value,
+					tomatoContextId: note.tomatoContextId
 					// note: '<p><u>Some text </u></p><p><br></p><p><em>Italic</em></p><p><strong>Strong</strong></p><p><br></p><p><u>And some more random text. And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.Some text </u></p><p><br></p><p><em>Italic</em></p><p><strong>Strong</strong></p><p><br></p><p>And some more random text. And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.<u>Some text </u></p><p><br></p><p><em>Italic</em></p><p><strong>Strong</strong></p><p><br></p><p>And some more random text. And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.<u>Some text </u></p><p><br></p><p><em>Italic</em></p><p><strong>Strong</strong></p><p><br></p><p>And some more random text. And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.<u>Some text </u></p><p><br></p><p><em>Italic</em></p><p><strong>Strong</strong></p><p><br></p><p>And some more random text. And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.<u>Some text </u></p><p><br></p><p><em>Italic</em></p><p><strong>Strong</strong></p><p><br></p><p>And some more random text. And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.And some more random text.</p>'
 				}
 			}
