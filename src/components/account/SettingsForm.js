@@ -43,12 +43,17 @@ const SettingsForm = ({ settings, handleChange, onSave }) => {
 				></TextInput>
 			</div>
 			<button
+				id="save_settings"
 				className="btn btn-primary margin-top margin-right"
 				onClick={onSave}
 			>
 				Save Settings
 			</button>
-			<button className="btn btn-primary margin-top" onClick={restoreDefaults}>
+			<button
+				id="restore_settings"
+				className="btn btn-primary margin-top"
+				onClick={restoreDefaults}
+			>
 				Restore Default Settings
 			</button>
 		</>

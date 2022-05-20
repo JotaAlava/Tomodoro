@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Auth0Provider } from '@auth0/auth0-react';
@@ -21,7 +21,8 @@ import 'react-quill/dist/quill.snow.css';
 const auth0 = {
 	domain: process.env.auth0Domain,
 	clientId: process.env.auth0ClientId,
-	audience: process.env.auth0Audience
+	audience: process.env.auth0Audience,
+	redirect_uri: `${window.location.origin}/tomatoes`
 };
 
 function App(props) {
@@ -31,7 +32,7 @@ function App(props) {
 				domain={auth0.domain}
 				clientId={auth0.clientId}
 				audience={auth0.audience}
-				redirectUri={window.location.origin}
+				redirectUri={auth0.redirect_uri}
 				scope={'openid'}
 			>
 				<Header></Header>

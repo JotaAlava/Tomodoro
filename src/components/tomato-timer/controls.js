@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useClockify } from './clockify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,8 +12,16 @@ import * as tomatoTimerActions from '../../redux/actions/tomatoTimerActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import {
+	ga,
+	EventType,
+	Label,
+	Categories,
+	EventNames
+} from '../../services/utility';
 
 const Controls = (props) => {
+	const { user } = useAuth0();
 	const [tomatoInterval, setTomatoInterval] = useState(false);
 
 	useEffect(async () => {
@@ -36,14 +45,35 @@ const Controls = (props) => {
 	const handleReset = () => {
 		props.actions.resetTimer();
 		handlePlayPause();
+
+		const type = EventType.Event;
+		const eventName = EventNames.TIMER.TimerReset;
+		const eventLabel = Label.buildLabel(eventName, user.sub);
+		const eventCategory = Categories.TIMER;
+
+		ga(type, eventName, eventCategory, eventLabel);
 	};
 
 	const handlePlayPause = () => {
 		if (!props.tomatoTimer.isRunning && props.tomatoTimer.time >= 0) {
 			timerStart();
+
+			const type = EventType.Event;
+			const eventName = EventNames.TIMER.TimerStart;
+			const eventLabel = Label.buildLabel(eventName, user.sub);
+			const eventCategory = Categories.TIMER;
+
+			ga(type, eventName, eventCategory, eventLabel);
 		} else if (props.tomatoTimer.isRunning) {
 			props.actions.stopTimer();
 			clearInterval(tomatoInterval);
+
+			const type = EventType.Event;
+			const eventName = EventNames.TIMER.TimerStop;
+			const eventLabel = Label.buildLabel(eventName, user.sub);
+			const eventCategory = Categories.TIMER;
+
+			ga(type, eventName, eventCategory, eventLabel);
 		} else {
 			// Do nothing because we are at 0 already.
 			// User should click "reset" in order to reset the timer
@@ -63,12 +93,26 @@ const Controls = (props) => {
 		props.actions.startShortBreak();
 		clearInterval(tomatoInterval);
 		timerStart();
+
+		const type = EventType.Event;
+		const eventName = EventNames.TIMER.TimerBreak;
+		const eventLabel = Label.buildLabel(eventName, user.sub);
+		const eventCategory = Categories.TIMER;
+
+		ga(type, eventName, eventCategory, eventLabel);
 	};
 
 	const handleLongBreak = () => {
 		props.actions.startLongBreak();
 		clearInterval(tomatoInterval);
 		timerStart();
+
+		const type = EventType.Event;
+		const eventName = EventNames.TIMER.TimerLongBreak;
+		const eventLabel = Label.buildLabel(eventName, user.sub);
+		const eventCategory = Categories.TIMER;
+
+		ga(type, eventName, eventCategory, eventLabel);
 	};
 
 	return (
@@ -86,27 +130,30 @@ const Controls = (props) => {
 			<button
 				className="btn btn-primary"
 				type="button"
-				id="reset"
+				id="timer_reset"
 				onClick={handleReset}
 			>
-				<FontAwesomeIcon icon={faRedo} />
+				<FontAwesomeIcon id="timer_reset_svg" icon={faRedo} />
 			</button>
 			<button
 				className="btn btn-warning"
 				type="button"
-				id="reset"
+				id="timer_short_break"
 				onClick={handleShortBreak}
 			>
-				<FontAwesomeIcon icon={faCoffee} />
+				<FontAwesomeIcon
+					id="timer_short_break_svg"
+					icon={faCoffee}
+					style={{ height: '15px' }}
+				/>
 			</button>
 			<button
 				className="btn btn-warning"
 				type="button"
-				id="reset"
+				id="timer_long_break"
 				onClick={handleLongBreak}
 			>
-				<FontAwesomeIcon icon={faCoffee} />
-				<FontAwesomeIcon icon={faCoffee} />
+				<FontAwesomeIcon icon={faCoffee} style={{ height: '20px' }} />
 			</button>
 			<audio id="beep" src={bellSoundUrl} ref={audioSoundRef} preload="auto" />
 		</div>

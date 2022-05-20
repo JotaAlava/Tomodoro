@@ -5,12 +5,12 @@ const transformToMap = (todos) => {
 	const result = {};
 
 	// eslint-disable-next-line no-prototype-builtins
-	if (todos.hasOwnProperty('forEach')) {
+	if (todos.forEach) {
 		todos.forEach((todo) => {
 			if (result[todo.tomatoContextId]) {
 				result[todo.tomatoContextId].push(todo);
 			} else {
-				result[todo.tomatoContextId] = [];
+				result[todo.tomatoContextId] = [todo];
 			}
 		});
 	}

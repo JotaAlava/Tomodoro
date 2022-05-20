@@ -9,7 +9,14 @@ import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import SignInMessage from '../shared/SignInMessage';
 import Loading from '../shared/Loading';
-import { onSessionEnd } from '../../services/utility';
+import {
+	ga,
+	EventType,
+	Label,
+	Categories,
+	EventNames,
+	onSessionEnd
+} from '../../services/utility';
 
 const emptyTomato = {
 	created: null,
@@ -60,6 +67,13 @@ const TomatoCreate = ({ selectedContext, actions }) => {
 						setSaving(false);
 					});
 				}
+
+				const type = EventType.Event;
+				const eventName = EventNames.TOMATO.saved;
+				const eventLabel = Label.buildLabel(eventName, user.sub);
+				const eventCategory = Categories.TOMATO;
+
+				ga(type, eventName, eventCategory, eventLabel);
 			})
 			.catch((error) => {
 				setSaving(false);

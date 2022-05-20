@@ -177,8 +177,10 @@ html,
 	margin-bottom: 70px;
 }
 
-#reset {
+#timer_short_break,
+#start_stop {
 	margin-left: 5px;
+	margin-right: 5px;
 }
 
 .controls__wrp {
@@ -205,14 +207,12 @@ html,
 
 .empty-notes {
 	height: 340px;
-	padding-top: 50px;
 }
 
 .empty-previous-notes {
 	display: flex;
 	justify-content: center;
-	padding-top: 50px;
-	margin-top: 50px;
+	height: 400px;
 }
 
 .pointer {
@@ -463,4 +463,8 @@ html,
 
 .ql-picker-options {
 	background-color: #4d4637 !important;
+}
+
+.loading-height {
+	height: 400px;
 }

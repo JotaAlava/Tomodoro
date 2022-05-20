@@ -28,7 +28,7 @@ module.exports = {
 				'https://b0yojzr0z1.execute-api.us-east-1.amazonaws.com/dev/'
 			),
 			'process.env.PRODUCT_ID': JSON.stringify(
-				'5F27FC90-1F7A-11EC-B294-AB5D2B155148' // Most Expensive Developer ProductId
+				'5F27FC90-1F7A-11EC-B294-AB5D2B155148' // // ElPomodoro ProductId
 			),
 			'process.env.auth0Domain': JSON.stringify(
 				'mostexpensivedeveloper-dev.us.auth0.com'
@@ -38,7 +38,9 @@ module.exports = {
 			),
 			'process.env.auth0Audience': JSON.stringify(
 				'https://mostexpensivedeveloper-dev.us.auth0.com/api/v2/'
-			)
+			),
+			'process.env.GA': JSON.stringify('G-5NE4871L3N'),
+			'process.env.environment': JSON.stringify('dev')
 		}),
 		new HtmlWebpackPlugin({
 			template: 'src/index.html',

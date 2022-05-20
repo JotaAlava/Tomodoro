@@ -32,7 +32,7 @@ export function saveContext(newContext, token, userId) {
 					created: new Date().toISOString(),
 					default: newContext.default,
 					label: newContext.label,
-					private: newContext.private,
+					private: true,
 					deleted: false
 				}
 			}

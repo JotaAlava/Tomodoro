@@ -10,7 +10,14 @@ import SettingsForm from '../account/SettingsForm';
 import Loading from '../shared/Loading';
 import Title from '../shared/Title';
 import * as settingsActions from '../../redux/actions/settingsActions';
-import { onSessionEnd } from '../../services/utility';
+import {
+	onSessionEnd,
+	ga,
+	EventType,
+	Label,
+	Categories,
+	EventNames
+} from '../../services/utility';
 
 const Settings = (props) => {
 	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
@@ -31,11 +38,25 @@ const Settings = (props) => {
 				.then(() => {
 					loadSettings();
 					toast.success('Settings saved');
+
+					const type = EventType.Event;
+					const eventName = EventNames.SETTINGS.saved;
+					const eventLabel = Label.buildLabel(eventName, user.sub);
+					const eventCategory = Categories.SETTINGS;
+
+					ga(type, eventName, eventCategory, eventLabel);
 				})
 				.catch((error) => {
 					setSaving(false);
 					setErrors({ onSave: error.message });
 					onSessionEnd(error, logout);
+
+					const type = EventType.Event;
+					const eventName = EventNames.SETTINGS.restore;
+					const eventLabel = Label.buildLabel(eventName, user.sub);
+					const eventCategory = Categories.SETTINGS;
+
+					ga(type, eventName, eventCategory, eventLabel);
 				});
 		} else {
 			toast.info('Updating settings!');
@@ -87,6 +108,13 @@ const Settings = (props) => {
 
 	useEffect(async () => {
 		loadSettings();
+
+		const type = EventType.Event;
+		const eventName = EventNames.NAVIGATION.settings;
+		const eventLabel = Label.buildLabel(eventName, user ? user.sub : 'no-user');
+		const eventCategory = Categories.NAVIGATION;
+
+		ga(type, eventName, eventCategory, eventLabel);
 	}, [isAuthenticated]);
 
 	function handleChange(event) {

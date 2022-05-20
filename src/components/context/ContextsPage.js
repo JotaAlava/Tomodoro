@@ -10,8 +10,15 @@ import Loading from '../shared/Loading';
 import ReloadOnError from '../shared/ReloadOnError';
 import ContextCreateButton from '../context/ContextCreateButton';
 import { toast } from 'react-toastify';
-import { onSessionEnd } from '../../services/utility';
 import SignInMessage from '../shared/SignInMessage';
+import {
+	onSessionEnd,
+	ga,
+	EventType,
+	Label,
+	Categories,
+	EventNames
+} from '../../services/utility';
 
 const ContextsPage = (props) => {
 	const [errors, setErrors] = useState({});
@@ -54,6 +61,13 @@ const ContextsPage = (props) => {
 	useEffect(async () => {
 		setLoading(true);
 		loadContexts();
+
+		const type = EventType.Event;
+		const eventName = EventNames.NAVIGATION.contexts;
+		const eventLabel = Label.buildLabel(eventName, user ? user.sub : 'no-user');
+		const eventCategory = Categories.NAVIGATION;
+
+		ga(type, eventName, eventCategory, eventLabel);
 	}, [isAuthenticated]);
 
 	const createContext = () => {

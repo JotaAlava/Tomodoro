@@ -10,6 +10,7 @@ import * as dailyNoteActions from '../../redux/actions/dailyNoteActions';
 import Title from '../shared/Title';
 import { onSessionEnd } from '../../services/utility';
 import Loading from '../shared/Loading';
+import SignInMessage from '../shared/SignInMessage';
 
 const DailyNotes = (props) => {
 	const { isAuthenticated, getAccessTokenSilently, user, logout } = useAuth0();
@@ -90,7 +91,9 @@ const DailyNotes = (props) => {
 								) : (
 									<>
 										{loading ? (
-											<Loading></Loading>
+											<div className="loading-height">
+												<Loading></Loading>
+											</div>
 										) : (
 											<div className="note-box">
 												<ReactQuill
@@ -100,6 +103,7 @@ const DailyNotes = (props) => {
 												/>
 												<form onSubmit={onSave}>
 													<button
+														id="save_note"
 														type="submit"
 														disabled={saving}
 														className="btn btn-primary margin-top"
@@ -115,7 +119,9 @@ const DailyNotes = (props) => {
 						) : (
 							<>
 								{loading ? (
-									<Loading></Loading>
+									<div className="loading-height">
+										<Loading></Loading>
+									</div>
 								) : (
 									<div className="note-box">
 										<ReactQuill
@@ -125,6 +131,7 @@ const DailyNotes = (props) => {
 										/>
 										<form onSubmit={onSave}>
 											<button
+												id="save_note"
 												type="submit"
 												disabled={saving}
 												className="btn btn-primary margin-top"
@@ -138,7 +145,7 @@ const DailyNotes = (props) => {
 						)}
 					</>
 				) : (
-					<div className="note-box note-box-borders note-scroll margin-top">
+					<div className="note-box note-box-borders note-scroll margin-top loading-height">
 						<span className="empty-notes empty-previous-notes">
 							No contexts.
 						</span>
@@ -173,14 +180,18 @@ const DailyNotes = (props) => {
 						)}
 					</>
 				) : (
-					<p>No contexts.</p>
+					<div className="note-box note-box-borders note-scroll margin-top loading-height">
+						<span className="empty-notes empty-previous-notes">
+							No contexts.
+						</span>
+					</div>
 				)}
 			</>
 		);
 	} else {
 		return (
 			<main role="main" className="inner cover">
-				<p>Sign-in for Daily Notes</p>
+				<SignInMessage></SignInMessage>
 			</main>
 		);
 	}

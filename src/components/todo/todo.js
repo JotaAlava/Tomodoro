@@ -11,7 +11,14 @@ import TextInput from '../shared/TextInput';
 import Title from '../shared/Title';
 import Loading from '../shared/Loading';
 import * as contextActions from '../../redux/actions/contextActions';
-import { onSessionEnd } from '../../services/utility';
+import {
+	ga,
+	EventType,
+	Label,
+	Categories,
+	EventNames,
+	onSessionEnd
+} from '../../services/utility';
 
 const Todo = (props) => {
 	const [state, setState] = useState({
@@ -83,6 +90,12 @@ const Todo = (props) => {
 			props.todoActions
 				.saveTodo({ ...todo, tomatoContextId: ctx }, token, user.sub)
 				.then(async () => {
+					const type = EventType.Event;
+					const eventLabel = Label.buildLabel(EventNames.TODO, user);
+					const eventName = EventNames.TODO.saved;
+					const eventCategory = Categories.TODO;
+
+					ga(type, eventName, eventCategory, eventLabel);
 					toast.success('Todo saved!');
 					setErrors({});
 

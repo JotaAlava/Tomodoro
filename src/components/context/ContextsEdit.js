@@ -9,6 +9,14 @@ import * as contextActions from '../../redux/actions/contextActions';
 import ContextForm from './ContextForm';
 import Loading from '../shared/Loading';
 import { onSessionEnd } from '../../services/utility';
+import SignInMessage from '../shared/SignInMessage';
+import {
+	ga,
+	EventType,
+	Label,
+	Categories,
+	EventNames
+} from '../../services/utility';
 
 const emptyCtx = {
 	created: null,
@@ -50,6 +58,13 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
 			.then(() => {
 				toast.success('Context saved');
 				props.history.push('/contexts');
+
+				const type = EventType.Event;
+				const eventName = EventNames.CONTEXT.saved;
+				const eventLabel = Label.buildLabel(eventName, user.sub);
+				const eventCategory = Categories.CONTEXT;
+
+				ga(type, eventName, eventCategory, eventLabel);
 			})
 			.catch((error) => {
 				setSaving(false);
@@ -77,7 +92,7 @@ const ContextsEdit = ({ match, contexts, actions, ...props }) => {
 	} else {
 		return (
 			<>
-				<h3>Please sign-in</h3>
+				<SignInMessage></SignInMessage>
 			</>
 		);
 	}

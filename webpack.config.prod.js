@@ -32,11 +32,13 @@ module.exports = {
 			),
 			'process.env.auth0Domain': JSON.stringify('elpomodoro.us.auth0.com'),
 			'process.env.auth0ClientId': JSON.stringify(
-				'kXY9WcPze0gbSCtJpSAsw5HBAViTtY9C'
+				'FzpO1Ueg5y16Lh8uaPzHlUnqURMHvkJb'
 			),
 			'process.env.auth0Audience': JSON.stringify(
 				'https://elpomodoro.us.auth0.com/api/v2/'
-			)
+			),
+			'process.env.GA': JSON.stringify('G-90JD8VRFR5'),
+			'process.env.environment': JSON.stringify('prod')
 		}),
 		new HtmlWebpackPlugin({
 			template: 'src/index.html',

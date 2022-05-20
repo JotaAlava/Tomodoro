@@ -115,6 +115,7 @@ const TomatoesTable = (props) => {
 					setLoadingTomatoes(false);
 				})
 				.catch((err) => {
+					setLoadingTomatoes(false);
 					setErrors({ ...errors, tomatoes: err });
 					onSessionEnd(err, logout);
 				});

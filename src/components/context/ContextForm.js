@@ -10,11 +10,13 @@ const ContextForm = ({ context, onSave, onChange, saving = false, errors }) => {
 				<h2>
 					{context && context.tomatoContextId ? 'Edit' : 'Add'} Work Context
 				</h2>
+				
 				{errors.onSave && (
 					<div className="alert alert-danger" role="alert">
 						{errors.onSave}
 					</div>
 				)}
+
 				<TextInput
 					id="label"
 					name="label"
@@ -22,14 +24,6 @@ const ContextForm = ({ context, onSave, onChange, saving = false, errors }) => {
 					value={context.label}
 					onChange={onChange}
 					error={errors.label}
-				/>
-				<BooleanInput
-					id="private"
-					name="private"
-					label="private"
-					value={context.private}
-					onChange={onChange}
-					error={errors.private}
 				/>
 
 				<BooleanInput
@@ -42,7 +36,7 @@ const ContextForm = ({ context, onSave, onChange, saving = false, errors }) => {
 				/>
 
 				{saving}
-				<button type="submit" disabled={saving} className="btn btn-primary">
+				<button id="save_work_context" type="submit" disabled={saving} className="btn btn-primary">
 					{saving ? 'Saving...' : 'Save'}
 				</button>
 			</form>
